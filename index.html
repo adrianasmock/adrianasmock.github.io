@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adriana Smock · Data &amp; BI Analyst</title>
+<meta name="description" content="Adriana Smock — Senior Data & Business Intelligence Analyst and Analytics Consultant. Power BI, DAX, SQL, forecasting, inventory and sales analytics.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --surface: #ffffff;
+    --text: #16181d;
+    --muted: #5b6270;
+    --border: #e3e6eb;
+    --accent: #2f6fed;
+    --accent-soft: #e8effd;
+    --bar: #2f6fed;
+    --bar-2: #a9c1f7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115;
+      --surface: #171a21;
+      --text: #e8eaee;
+      --muted: #9aa2b1;
+      --border: #272b35;
+      --accent: #6b9bff;
+      --accent-soft: #1c2740;
+      --bar: #6b9bff;
+      --bar-2: #34466e;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 Inter, system-ui, sans-serif;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
+
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 16px; }
+  nav .logo { font-weight: 700; color: var(--text); }
+  nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; font-size: 15px; }
+  nav ul a { color: var(--muted); }
+  nav ul a:hover { color: var(--text); text-decoration: none; }
+  @media (max-width: 600px) { nav ul { gap: 12px; font-size: 14px; } nav .logo { display: none; } }
+
+  header { padding: 80px 0 56px; }
+  .eyebrow { font-family: "JetBrains Mono", monospace; font-size: 14px; color: var(--accent); margin: 0 0 12px; }
+  h1 { font-size: clamp(34px, 6vw, 52px); line-height: 1.1; margin: 0 0 20px; letter-spacing: -0.02em; }
+  .lead { font-size: 18px; color: var(--muted); max-width: 680px; margin: 0 0 14px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .btn {
+    display: inline-block; padding: 10px 18px; border-radius: 8px; font-weight: 600; font-size: 15px;
+    border: 1px solid var(--border); color: var(--text); background: var(--surface);
+  }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn:hover { text-decoration: none; filter: brightness(1.05); }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 48px; }
+  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .stat b { display: block; font-size: 24px; }
+  .stat span { color: var(--muted); font-size: 14px; }
+
+  section { padding: 56px 0; border-top: 1px solid var(--border); }
+  h2 { font-size: 26px; margin: 0 0 24px; letter-spacing: -0.01em; }
+
+  .skill-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .group { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .group h3 { margin: 0 0 12px; font-size: 16px; }
+  .group ul { list-style: none; margin: 0; padding: 0; }
+  .group li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 7px 0; border-top: 1px solid var(--border); font-size: 15px; }
+  .group li:first-child { border-top: 0; }
+  .lvl { font-family: "JetBrains Mono", monospace; font-size: 11px; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+  .lvl.adv { background: var(--accent); color: #fff; }
+  .lvl.strong { background: var(--accent-soft); color: var(--accent); }
+  .lvl.mid { border: 1px solid var(--border); color: var(--muted); }
+  .lvl.learn { border: 1px dashed var(--border); color: var(--muted); }
+
+  .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px; display: flex; flex-direction: column;
+  }
+  .card .thumb {
+    height: 120px; border-radius: 8px; margin-bottom: 16px; background: var(--accent-soft);
+    display: flex; align-items: flex-end; gap: 6px; padding: 16px; overflow: hidden;
+  }
+  .card .thumb img { width: calc(100% + 32px); height: calc(100% + 32px); margin: -16px; object-fit: cover; }
+  .card .thumb i { flex: 1; background: var(--bar); border-radius: 3px 3px 0 0; opacity: .9; }
+  .card .thumb i.alt { background: var(--bar-2); }
+  .card h3 { margin: 0 0 8px; font-size: 18px; }
+  .card p { margin: 0 0 14px; color: var(--muted); font-size: 15px; }
+  .card .result { color: var(--text); font-size: 14px; margin-bottom: 14px; flex: 1; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tag { font-family: "JetBrains Mono", monospace; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+  .soon { font-size: 13px; color: var(--muted); }
+
+  .timeline { display: grid; gap: 24px; }
+  .item { display: grid; grid-template-columns: 170px 1fr; gap: 16px; }
+  .item .when { color: var(--muted); font-size: 14px; padding-top: 2px; }
+  .item h3 { margin: 0; font-size: 17px; }
+  .item .org { color: var(--accent); font-weight: 500; }
+  .item p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+  .item ul { margin: 6px 0 0; padding-left: 18px; color: var(--muted); font-size: 15px; }
+  .item li { margin: 3px 0; }
+  .item li b { color: var(--text); font-weight: 600; }
+  @media (max-width: 600px) { .item { grid-template-columns: 1fr; gap: 2px; } }
+
+  .edu { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 40px; }
+  .edu div { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .edu b { display: block; font-size: 15px; margin-bottom: 4px; }
+  .edu span { color: var(--muted); font-size: 14px; }
+
+  .contact p { color: var(--muted); max-width: 600px; }
+  footer { padding: 32px 0 48px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#">Adriana Smock</a>
+    <ul>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ===== INTRO ===== -->
+  <header>
+    <p class="eyebrow">// senior data &amp; BI analyst · analytics consultant</p>
+    <h1>Hi, I'm Adriana Smock.<br>I turn complex data into business decisions.</h1>
+    <p class="lead">
+      I'm a data and business intelligence professional with 8+ years of experience across manufacturing,
+      operations and business analytics. I specialize in Power BI, SQL, Excel, forecasting and automated reporting.
+    </p>
+    <p class="lead">
+      My operations background helps me connect technical analysis to real business challenges in sales performance,
+      inventory management, supply chain visibility and strategic planning.
+    </p>
+    <div class="btns">
+      <a class="btn primary" href="#projects">See my projects</a>
+      <a class="btn" href="resume.pdf">Download résumé</a> <!-- upload your résumé as resume.pdf -->
+      <a class="btn" href="https://www.linkedin.com/in/adriana-smock">LinkedIn</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>8+ years</b><span>in manufacturing, operations &amp; analytics</span></div>
+      <div class="stat"><b>8+ hrs/week</b><span>saved by automating reporting &amp; alerts</span></div>
+      <div class="stat"><b>−20%</b><span>undeliverable international shipments in one year</span></div>
+      <div class="stat"><b>Up to 40</b><span>people led in manufacturing operations</span></div>
+    </div>
+  </header>
+
+  <!-- ===== SKILLS =====
+       Levels: class="lvl adv" Advanced · "lvl strong" Strong · "lvl mid" Intermediate · "lvl learn" Learning -->
+  <section id="skills">
+    <h2>Skills &amp; tools</h2>
+    <div class="skill-groups">
+
+      <div class="group">
+        <h3>Business intelligence &amp; visualization</h3>
+        <ul>
+          <li>Power BI <span class="lvl adv">Advanced</span></li>
+          <li>DAX <span class="lvl adv">Advanced</span></li>
+          <li>Power Query <span class="lvl adv">Advanced</span></li>
+          <li>Dashboard development <span class="lvl adv">Advanced</span></li>
+          <li>KPI development &amp; reporting <span class="lvl adv">Advanced</span></li>
+          <li>Data modeling <span class="lvl strong">Strong</span></li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3>Data analysis &amp; programming</h3>
+        <ul>
+          <li>Excel (formulas, PivotTables, Power Query) <span class="lvl adv">Advanced</span></li>
+          <li>Data cleaning &amp; transformation <span class="lvl adv">Advanced</span></li>
+          <li>SQL <span class="lvl strong">Strong</span></li>
+          <li>Snowflake <span class="lvl mid">Intermediate</span></li>
+          <li>Statistical analysis <span class="lvl mid">Intermediate</span></li>
+          <li>Python <span class="lvl learn">Learning</span></li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3>Business &amp; operations analytics</h3>
+        <ul>
+          <li>Sales &amp; revenue analytics <span class="lvl adv">Advanced</span></li>
+          <li>Inventory &amp; supply chain analytics <span class="lvl adv">Advanced</span></li>
+          <li>Process improvement <span class="lvl adv">Advanced</span></li>
+          <li>Demand forecasting <span class="lvl strong">Strong</span></li>
+          <li>Sales &amp; operations planning <span class="lvl strong">Strong</span></li>
+          <li>Pricing &amp; profitability analysis <span class="lvl strong">Strong</span></li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3>Other tools</h3>
+        <ul>
+          <li>Confido <span class="lvl strong">Strong</span></li>
+          <li>ERP data integration <span class="lvl strong">Strong</span></li>
+          <li>Power Automate <span class="lvl mid">Intermediate</span></li>
+          <li>SPINS <span class="lvl mid">Intermediate</span></li>
+          <li>QuickBooks Online <span class="lvl mid">Working knowledge</span></li>
+          <li>Microsoft Fabric <span class="lvl learn">Learning</span></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS =====
+       When a public demo is ready, replace the <span class="soon">…</span> line with links, e.g.:
+         <div class="links"><a href="https://...">View dashboard →</a></div>
+       To show a screenshot, replace the <i> bars with: <img src="images/sales-dashboard.png" alt="Dashboard screenshot">
+  -->
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+
+      <article class="card">
+        <div class="thumb"><i style="height:40%"></i><i style="height:62%"></i><i style="height:55%"></i><i style="height:78%"></i><i style="height:70%"></i><i style="height:92%"></i></div>
+        <h3>Sales &amp; Operations Performance Dashboard</h3>
+        <p>Designed a Power BI reporting solution consolidating sales, forecasts and operational KPIs into interactive dashboards, with DAX measures for year-over-year comparisons, monthly performance and sales trends.</p>
+        <div class="result"><b>Outcome:</b> a centralized reporting framework that lets stakeholders monitor performance, spot sales trends and make better-informed decisions.</div>
+        <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Power Query</span><span class="tag">Excel</span><span class="tag">SQL</span></div>
+        <span class="soon">Public demo with sample data coming soon</span>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><i style="height:85%"></i><i class="alt" style="height:30%"></i><i style="height:70%"></i><i class="alt" style="height:18%"></i><i style="height:60%"></i><i style="height:88%"></i></div>
+        <h3>Inventory &amp; Distribution Analytics Tracker</h3>
+        <p>Built an inventory tracking solution monitoring product availability, weeks of supply, stockout risk and distribution across multiple distribution centers, flagging low-stock products to prioritize replenishment.</p>
+        <div class="result"><b>Outcome:</b> clearer visibility into inventory coverage and potential stockouts, supporting proactive inventory planning and distribution decisions.</div>
+        <div class="tags"><span class="tag">Excel</span><span class="tag">Power Query</span><span class="tag">Power BI</span></div>
+        <span class="soon">Demo with synthetic inventory data coming soon</span>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><i style="height:45%"></i><i class="alt" style="height:50%"></i><i style="height:60%"></i><i class="alt" style="height:58%"></i><i style="height:75%"></i><i class="alt" style="height:82%"></i></div>
+        <h3>Demand Forecasting &amp; Sales Planning Analysis</h3>
+        <p>Developed and maintained forecasts incorporating historical sales, seasonality, product trends and customer-level demand, using variance analysis to compare actuals against projections.</p>
+        <div class="result"><b>Outcome:</b> analytical frameworks to identify forecast variances, evaluate demand patterns and improve visibility into future sales requirements.</div>
+        <div class="tags"><span class="tag">Excel</span><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Confido</span></div>
+        <span class="soon">Forecasting case study coming soon</span>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===== EXPERIENCE & EDUCATION ===== -->
+  <section id="experience">
+    <h2>Experience</h2>
+    <div class="timeline">
+      <div class="item">
+        <div class="when">May 2026 – Present</div>
+        <div>
+          <h3>Senior Sales &amp; Operations Analyst · <span class="org">Bonafide Provisions</span></h3>
+          <ul>
+            <li>Build Power BI data models, DAX measures and executive dashboards integrating sales, forecasts, open orders and distributor data.</li>
+            <li>Create inventory management reports, distribution trackers and pricing analyses to support planning and pricing decisions.</li>
+            <li>Partner with Sales, Finance and Operations leaders to define KPIs, investigate variances and turn findings into planning decisions.</li>
+            <li>Automate recurring reporting and alerts with Power BI and Power Automate, <b>saving 8+ hours per week</b>.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="item">
+        <div class="when">Jun 2024 – May 2026</div>
+        <div>
+          <h3>Sales &amp; Operations Analyst · <span class="org">Better Butter</span></h3>
+          <ul>
+            <li>Used SQL and Snowflake alongside Power BI to retrieve and analyze data for sales and operations reporting.</li>
+            <li>Built Power BI dashboards for Sales, Procurement, Finance and leadership, including inventory visibility and three-month material planning.</li>
+            <li>Analyzed SPINS syndicated and internal sales data to evaluate customer, SKU, promotion and forecast performance.</li>
+            <li>Applied variance and root-cause analysis to support demand planning and customer reviews; maintained records in Sage X3 ERP.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="item">
+        <div class="when">Mar 2022 – Jun 2024</div>
+        <div>
+          <h3>Logistics Data Analyst · <span class="org">Global Access</span></h3>
+          <ul>
+            <li>Analyzed shipping, carrier, cost and delivery data and built dashboards to monitor logistics KPIs and service performance.</li>
+            <li>Identified root causes of undeliverable international shipments, helping <b>reduce them by 20% within one year</b>.</li>
+            <li>Partnered with Operations and Customer Service to improve data accuracy, processes and performance reporting.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="item">
+        <div class="when">Jul 2019 – Mar 2022</div>
+        <div>
+          <h3>Packaging Department Supervisor · <span class="org">CSB Nutrition Corporation</span></h3>
+          <ul>
+            <li>Led packaging teams of <b>20–25 employees, up to 40</b> during peak production, coordinating schedules with Planning and Inventory.</li>
+            <li>Tracked throughput, labor productivity and quality metrics to improve output and reduce production bottlenecks.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:48px">Education &amp; certifications</h2>
+    <div class="edu">
+      <div><b>Master's Degree in Management and Productivity</b><span>Universidad APEC · Santo Domingo, Dominican Republic · 2016 – 2018</span></div>
+      <div><b>Bachelor of Science in Marketing</b><span>Universidad del Caribe</span></div>
+      <div><b>SQL Foundations</b><span>Microsoft · 2025</span></div>
+      <div><b>Data Analysis with R Programming</b><span>Google · 2024</span></div>
+      <div><b>Google Data Analysis with Python</b><span>Google · 2026</span></div>
+      <div><b>Applied Data Science with Python Specialization</b><span>Coursera · In progress</span></div>
+      <div><b>Microsoft Power BI Certification Training</b><span>Training complete · Certification exam in progress</span></div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="contact">
+    <h2>Let's work together</h2>
+    <p>I'm open to business intelligence, data analytics and analytics consulting opportunities. Email is the best way to reach me.</p>
+    <div class="btns">
+      <a class="btn primary" href="mailto:adrianasmock@gmail.com">adrianasmock@gmail.com</a>
+      <a class="btn" href="https://www.linkedin.com/in/adriana-smock">LinkedIn</a>
+      <a class="btn" href="https://github.com/adrianasmock">GitHub</a>
+      <a class="btn" href="resume.pdf">Résumé (PDF)</a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">© 2026 Adriana Smock</div>
+</footer>
+
+</body>
+</html>

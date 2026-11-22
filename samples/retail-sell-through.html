@@ -45,7 +45,7 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px soli
 </header>
 <section><div class="grid">
   <div class="box"><h3>What the report answers</h3><ul><li>Retail $ and units, latest 52 weeks vs. year ago</li><li>Distribution (% of stores selling) and how many points it gained</li><li>Velocity: $ per store, per SKU, per week, by product line</li><li>Promotion lift: base vs. promo velocity by retailer</li></ul></div>
-  <div class="box"><h3>What the sample data shows</h3><p>Sales grew 26.7% vs. year ago. Distribution gained 8.8 points and velocity grew 10.4%, so growth came from both new stores and existing stores selling more. Promotions lifted velocity most at Summit Grocery and least at Corner Convenience, which is where a trade conversation should start.</p></div>
+  <div class="box"><h3>What the sample data shows</h3><p>Sales grew 26.3% vs. year ago. Distribution gained 8.8 points and velocity grew 10.0%, so growth came from both new stores and existing stores selling more. Promotions lifted velocity most at Summit Grocery and least at Corner Convenience, which is where a trade conversation should start.</p></div>
 </div></section>
 <section><h2>Data model</h2>
   <p class="lead" style="font-size:16px">A star schema: one fact table with the numbers, and dimension tables for filtering. Relationships are one-to-many from each dimension to the fact table on its ID or key column.</p>
@@ -91,7 +91,7 @@ Promo Lift % = DIVIDE ( [Promo Velocity], [Base Velocity] ) - 1</code></pre></se
   <p>Download the CSV files to rebuild this report: <a href="data/fact_retail_sales.csv">fact_retail_sales.csv</a> · <a href="data/dim_week.csv">dim_week.csv</a> · <a href="data/dim_product.csv">dim_product.csv</a> · <a href="data/dim_retailer.csv">dim_retailer.csv</a>, or get <a href="data/saltbrush-sample-data.zip">all sample files (.zip)</a>.</p>
   <div class="btns"><a class="btn primary" href="https://synesisanalytics.com/consultation">Want this for your brand? Book a consultation</a><a class="btn" href="../index.html#samples">All samples</a></div>
 </section>
-<section><h2>More samples</h2><div class="more"><a href="inventory-weeks-of-supply.html">Inventory &amp; weeks of supply &rarr;</a><a href="forecast-accuracy.html">Forecast accuracy &amp; S&amp;OP &rarr;</a><a href="trade-spend-margin.html">Trade spend &amp; margin &rarr;</a><a href="sku-profitability.html">SKU profitability &rarr;</a></div></section>
+<section><h2>More samples</h2><div class="more"><a href="inventory-weeks-of-supply.html">Inventory &amp; weeks of supply &rarr;</a><a href="forecast-accuracy.html">Forecast accuracy &amp; S&amp;OP &rarr;</a><a href="trade-spend-margin.html">Trade spend &amp; margin &rarr;</a><a href="sku-profitability.html">SKU profitability &rarr;</a><a href="pricing-profitability.html">Pricing &amp; profitability &rarr;</a></div></section>
 </div>
 <footer><div class="wrap">© 2026 Adriana Smock · Sample built with invented data</div></footer>
 </body></html>

@@ -45,7 +45,7 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px soli
 </header>
 <section><div class="grid">
   <div class="box"><h3>What the report answers</h3><ul><li>Inventory on hand at cost and network weeks of supply</li><li>A heat map of weeks of supply by product and DC</li><li>Stockout-risk (&lt; 2 weeks) and overstock (&gt; 8 weeks) positions</li><li>Inventory with a best-by date in the next 60 days, plus an action list</li></ul></div>
-  <div class="box"><h3>What the sample data shows</h3><p>The network sits at 4.3 weeks of supply, inside the 3–6 week target, but that average hides 7 positions at stockout risk, including three tortilla chip items in Salt Lake City, and 4 overstocked positions. The action list turns those into transfers, expedited POs or paused orders.</p></div>
+  <div class="box"><h3>What the sample data shows</h3><p>The network sits at 4.5 weeks of supply, inside the 3–6 week target, but that average hides 6 positions at stockout risk, including three tortilla chip items in Salt Lake City, and 5 overstocked positions. The action list turns those into transfers, expedited POs or paused orders.</p></div>
 </div></section>
 <section><h2>Data model</h2>
   <p class="lead" style="font-size:16px">A star schema: one fact table with the numbers, and dimension tables for filtering. Relationships are one-to-many from each dimension to the fact table on its ID or key column.</p>
@@ -98,7 +98,7 @@ RETURN
   <p>Download the CSV files to rebuild this report: <a href="data/fact_dc_inventory.csv">fact_dc_inventory.csv</a> · <a href="data/dim_week.csv">dim_week.csv</a> · <a href="data/dim_product.csv">dim_product.csv</a> · <a href="data/dim_dc.csv">dim_dc.csv</a>, or get <a href="data/saltbrush-sample-data.zip">all sample files (.zip)</a>.</p>
   <div class="btns"><a class="btn primary" href="https://synesisanalytics.com/consultation">Want this for your brand? Book a consultation</a><a class="btn" href="../index.html#samples">All samples</a></div>
 </section>
-<section><h2>More samples</h2><div class="more"><a href="retail-sell-through.html">Retail sell-through &rarr;</a><a href="forecast-accuracy.html">Forecast accuracy &amp; S&amp;OP &rarr;</a><a href="trade-spend-margin.html">Trade spend &amp; margin &rarr;</a><a href="sku-profitability.html">SKU profitability &rarr;</a></div></section>
+<section><h2>More samples</h2><div class="more"><a href="retail-sell-through.html">Retail sell-through &rarr;</a><a href="forecast-accuracy.html">Forecast accuracy &amp; S&amp;OP &rarr;</a><a href="trade-spend-margin.html">Trade spend &amp; margin &rarr;</a><a href="sku-profitability.html">SKU profitability &rarr;</a><a href="pricing-profitability.html">Pricing &amp; profitability &rarr;</a></div></section>
 </div>
 <footer><div class="wrap">© 2026 Adriana Smock · Sample built with invented data</div></footer>
 </body></html>

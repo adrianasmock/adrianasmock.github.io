@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricing & Profitability Dashboard · Power BI sample · Adriana Smock</title>
+<meta name="description" content="Did the price increase pay off, how much of the growth came from price vs. volume, and where is the brand priced against competitors? This report breaks sales growth into price, volume and mix, and measures how shoppers responded to a March 2026 price increase.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>:root{--bg:#f7f8fa;--surface:#fff;--text:#16181d;--muted:#5b6270;--border:#e3e6eb;--accent:#2f6fed;--accent-soft:#e8effd;--code:#0f1342;--code-text:#e8eaee}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--surface:#171a21;--text:#e8eaee;--muted:#9aa2b1;--border:#272b35;--accent:#6b9bff;--accent-soft:#1c2740;--code:#0b0d12}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 Inter,system-ui,sans-serif}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px}
+nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}nav .logo{font-weight:700;color:var(--text)}
+nav ul{list-style:none;display:flex;gap:20px;margin:0;padding:0;font-size:15px}nav ul a{color:var(--muted)}
+header{padding:56px 0 28px}.eyebrow{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--accent);margin:0 0 12px}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.12;margin:0 0 16px;letter-spacing:-.02em}
+.lead{font-size:18px;color:var(--muted);max-width:720px;margin:0 0 12px}
+.note{display:inline-block;font-size:14px;color:var(--muted);background:var(--accent-soft);border-radius:8px;padding:8px 12px;margin-top:8px}
+figure{margin:24px 0 8px}figure img{width:100%;border-radius:10px;border:1px solid var(--border);display:block}
+figcaption{font-size:14px;color:var(--muted);margin-top:8px}
+section{padding:40px 0;border-top:1px solid var(--border)}h2{font-size:24px;margin:0 0 16px;letter-spacing:-.01em}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}.box h3{margin:0 0 8px;font-size:16px}
+.box p,.box li{color:var(--muted);font-size:15px}.box ul{margin:0;padding-left:18px}.box p{margin:0}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:9px 12px;border-top:1px solid var(--border);vertical-align:top}th{background:var(--accent-soft);color:var(--text);border-top:0}
+td code{font-family:"JetBrains Mono",monospace;font-size:13px}
+pre{background:var(--code);color:var(--code-text);border-radius:12px;padding:18px;overflow-x:auto;font:13px/1.55 "JetBrains Mono",monospace;margin:0 0 16px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}.tag{font-family:"JetBrains Mono",monospace;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.btn{display:inline-block;padding:10px 18px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--border);color:var(--text);background:var(--surface)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn:hover{text-decoration:none;filter:brightness(1.05)}
+.more{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.more a{display:block;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;color:var(--text);font-weight:600}
+footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px solid var(--border)}</style></head><body>
+<nav><div class="wrap"><a class="logo" href="../index.html">Adriana Smock</a><ul>
+<li><a href="../index.html#samples">Samples</a></li><li><a href="../index.html#projects">Work</a></li><li><a href="../index.html#contact">Contact</a></li></ul></div></nav>
+<div class="wrap">
+<header>
+  <p class="eyebrow">Power BI sample · Revenue management · Price-volume-mix</p>
+  <h1>Pricing & Profitability Dashboard</h1>
+  <p class="lead">Did the price increase pay off, how much of the growth came from price vs. volume, and where is the brand priced against competitors? This report breaks sales growth into price, volume and mix, and measures how shoppers responded to a March 2026 price increase.</p>
+  <span class="note">Saltbrush Snack Co. is a fictional brand. Every number on this page comes from an invented dataset, not from an employer or client.</span>
+  <figure><a href="../images/samples/pricing-profitability.png"><img src="../images/samples/pricing-profitability.png" alt="Pricing & Profitability Dashboard preview for the fictional brand Saltbrush Snack Co." width="2400" height="1350"></a>
+  <figcaption>Dashboard preview. Click to open full size.</figcaption></figure>
+  <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Price-volume-mix</span><span class="tag">Price elasticity</span><span class="tag">Revenue management</span></div>
+</header>
+<section><div class="grid">
+  <div class="box"><h3>What the report answers</h3><ul><li>A price-volume-mix bridge from last year&#x27;s retail sales to this year&#x27;s</li><li>Volume response to the price increase, using an unchanged product line as the control</li><li>Price index vs. competitors by product line</li><li>Price realization, net price and contribution per unit by retailer</li></ul></div>
+  <div class="box"><h3>What the sample data shows</h3><p>Retail sales grew $766K: price added $99K and volume $668K. The March increase on Kettle Chips (+6%) and Popcorn (+5%) lifted contribution per unit from $0.56 to $0.69 and from $0.86 to $0.96, and base velocity barely moved (measured elasticity −0.7 and −0.5, using Tortilla Chips as the control). Tortilla Chips were not increased and now sit 7% below competitors, which is the next pricing opportunity.</p></div>
+</div></section>
+<section><h2>Data model</h2>
+  <p class="lead" style="font-size:16px">A star schema: one fact table with the numbers, and dimension tables for filtering. Relationships are one-to-many from each dimension to the fact table on its ID or key column.</p>
+  <table><tr><th>Table</th><th>Contents</th></tr><tr><td><code>fact_retail_sales</code></td><td>Week × retailer × SKU: units, dollars, stores selling, promo flag, average and list shelf price</td></tr><tr><td><code>fact_price_list</code></td><td>SKU list price history with effective dates</td></tr><tr><td><code>fact_competitor_price</code></td><td>Month × product line: average competitor shelf price</td></tr><tr><td><code>fact_sku_pnl</code></td><td>Month × customer × SKU P&amp;L, used for net price and contribution per unit</td></tr><tr><td><code>dim_week · dim_product · dim_retailer</code></td><td>Shared dimensions; competitor prices join on product line</td></tr></table>
+</section>
+<section><h2>Key DAX measures</h2><pre><code>Retail $ = SUM ( fact_retail_sales[Dollars] )
+Units    = SUM ( fact_retail_sales[Units] )
+-- Retail $ YA and Units YA shift the fiscal week window back 52 weeks (see the sell-through sample)
+
+Avg Shelf Price = DIVIDE ( [Retail $], [Units] )
+
+Price Realization =
+DIVIDE ( [Retail $], SUMX ( fact_retail_sales, fact_retail_sales[Units] * fact_retail_sales[ShelfListPrice] ) )
+
+-- Price-volume-mix, calculated at SKU x retailer grain
+Avg Price YA = DIVIDE ( [Retail $ YA], [Units YA] )
+
+Price Effect =
+SUMX (
+    CROSSJOIN ( VALUES ( dim_product[SKU] ), VALUES ( dim_retailer[RetailerID] ) ),
+    VAR P0 = [Avg Price YA]
+    RETURN IF ( ISBLANK ( P0 ), 0, [Retail $] - P0 * [Units] )
+)
+
+Volume Effect = ( [Units] - [Units YA] ) * [Avg Price YA]
+
+Mix Effect =
+SUMX (
+    CROSSJOIN ( VALUES ( dim_product[SKU] ), VALUES ( dim_retailer[RetailerID] ) ),
+    [Avg Price YA] * [Units]
+) - [Units] * [Avg Price YA]
+
+-- Regular (list) shelf price vs. the average competitor shelf price; 100 = parity
+Price Index =
+DIVIDE (
+    DIVIDE ( SUMX ( fact_retail_sales, fact_retail_sales[Units] * fact_retail_sales[ShelfListPrice] ), [Units] ),
+    AVERAGE ( fact_competitor_price[CompetitorShelfPrice] )
+) * 100
+
+-- Velocity without promotion weeks, used to read the price response
+Base Velocity =
+CALCULATE ( DIVIDE ( [Units], SUM ( fact_retail_sales[StoresSelling] ) ), fact_retail_sales[PromoFlag] = 0 )
+
+Net Price per Unit =
+DIVIDE (
+    SUM ( fact_sku_pnl[GrossSales] ) - SUM ( fact_sku_pnl[OffInvoice] ) - SUM ( fact_sku_pnl[ScanDown] )
+        - SUM ( fact_sku_pnl[Slotting] ) - SUM ( fact_sku_pnl[Spoilage] ),
+    SUM ( fact_sku_pnl[Units] )
+)</code></pre></section>
+<section><h2>Sample data</h2>
+  <p>Download the CSV files to rebuild this report: <a href="data/fact_retail_sales.csv">fact_retail_sales.csv</a> · <a href="data/fact_price_list.csv">fact_price_list.csv</a> · <a href="data/fact_competitor_price.csv">fact_competitor_price.csv</a> · <a href="data/fact_sku_pnl.csv">fact_sku_pnl.csv</a> · <a href="data/dim_product.csv">dim_product.csv</a> · <a href="data/dim_retailer.csv">dim_retailer.csv</a> · <a href="data/dim_week.csv">dim_week.csv</a>, or get <a href="data/saltbrush-sample-data.zip">all sample files (.zip)</a>.</p>
+  <div class="btns"><a class="btn primary" href="https://synesisanalytics.com/consultation">Want this for your brand? Book a consultation</a><a class="btn" href="../index.html#samples">All samples</a></div>
+</section>
+<section><h2>More samples</h2><div class="more"><a href="retail-sell-through.html">Retail sell-through &rarr;</a><a href="inventory-weeks-of-supply.html">Inventory &amp; weeks of supply &rarr;</a><a href="forecast-accuracy.html">Forecast accuracy &amp; S&amp;OP &rarr;</a><a href="trade-spend-margin.html">Trade spend &amp; margin &rarr;</a><a href="sku-profitability.html">SKU profitability &rarr;</a></div></section>
+</div>
+<footer><div class="wrap">© 2026 Adriana Smock · Sample built with invented data</div></footer>
+</body></html>

@@ -45,7 +45,7 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px soli
 </header>
 <section><div class="grid">
   <div class="box"><h3>What the report answers</h3><ul><li>Net sales, contribution margin $ and % by SKU</li><li>A profit quadrant: velocity vs. contribution margin %, sized by net sales</li><li>A Pareto view of which SKUs earn most of the contribution</li><li>Unit economics by product line: COGS, freight, trade and contribution per unit</li></ul></div>
-  <div class="box"><h3>What the sample data shows</h3><p>Contribution margin is $599K, or 29.4% of net sales. Popcorn Sea Salt earns the most ($96.0K at 38.8%). Kettle Chips Jalapeño is the fourth-fastest seller but has the lowest margin (18.7%), so price or seasoning cost is the lever, not distribution. Four SKUs sit below 25% contribution margin.</p></div>
+  <div class="box"><h3>What the sample data shows</h3><p>Contribution margin is $639K, or 31.4% of net sales. Popcorn Sea Salt earns the most ($101K at 41.1%). Kettle Chips Jalapeño is the fourth-fastest seller but has the lowest margin (22.3%), so price or seasoning cost is the lever, not distribution. Two SKUs sit below 25% contribution margin.</p></div>
 </div></section>
 <section><h2>Data model</h2>
   <p class="lead" style="font-size:16px">A star schema: one fact table with the numbers, and dimension tables for filtering. Relationships are one-to-many from each dimension to the fact table on its ID or key column.</p>
@@ -93,7 +93,7 @@ RETURN
   <p>Download the CSV files to rebuild this report: <a href="data/fact_sku_pnl.csv">fact_sku_pnl.csv</a> · <a href="data/fact_retail_sales.csv">fact_retail_sales.csv</a> · <a href="data/dim_product.csv">dim_product.csv</a> · <a href="data/dim_retailer.csv">dim_retailer.csv</a>, or get <a href="data/saltbrush-sample-data.zip">all sample files (.zip)</a>.</p>
   <div class="btns"><a class="btn primary" href="https://synesisanalytics.com/consultation">Want this for your brand? Book a consultation</a><a class="btn" href="../index.html#samples">All samples</a></div>
 </section>
-<section><h2>More samples</h2><div class="more"><a href="retail-sell-through.html">Retail sell-through &rarr;</a><a href="inventory-weeks-of-supply.html">Inventory &amp; weeks of supply &rarr;</a><a href="forecast-accuracy.html">Forecast accuracy &amp; S&amp;OP &rarr;</a><a href="trade-spend-margin.html">Trade spend &amp; margin &rarr;</a></div></section>
+<section><h2>More samples</h2><div class="more"><a href="retail-sell-through.html">Retail sell-through &rarr;</a><a href="inventory-weeks-of-supply.html">Inventory &amp; weeks of supply &rarr;</a><a href="forecast-accuracy.html">Forecast accuracy &amp; S&amp;OP &rarr;</a><a href="trade-spend-margin.html">Trade spend &amp; margin &rarr;</a><a href="pricing-profitability.html">Pricing &amp; profitability &rarr;</a></div></section>
 </div>
 <footer><div class="wrap">© 2026 Adriana Smock · Sample built with invented data</div></footer>
 </body></html>

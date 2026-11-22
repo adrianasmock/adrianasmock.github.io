@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Adriana Smock · Power BI Developer for Food &amp; CPG</title>
 <meta name="description" content="Adriana Smock — Business intelligence portfolio focused on Power BI development for food and CPG brands: sell-through, inventory, forecasting and trade spend dashboards, DAX, data modeling, SQL and Snowflake.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://adrianasmock.github.io/">
+<meta property="og:title" content="Adriana Smock · Power BI Developer for Food &amp; CPG">
+<meta property="og:description" content="Power BI dashboards for food and CPG brands: sell-through, inventory, forecasting, trade spend, SKU profitability and pricing. Six samples with DAX and data.">
+<meta property="og:image" content="https://adrianasmock.github.io/images/og-image.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F1342'/%3E%3Crect x='14' y='34' width='8' height='16' rx='2' fill='%239AD5C2'/%3E%3Crect x='28' y='24' width='8' height='26' rx='2' fill='%2300A3A3'/%3E%3Crect x='42' y='14' width='8' height='36' rx='2' fill='%239AD5C2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
@@ -14,10 +22,11 @@
     --text: #16181d;
     --muted: #5b6270;
     --border: #e3e6eb;
-    --accent: #2f6fed;
-    --accent-soft: #e8effd;
-    --bar: #2f6fed;
-    --bar-2: #a9c1f7;
+    --accent: #007a7a;
+    --accent-soft: #e3f4ee;
+    --navy: #0f1342;
+    --bar: #009393;
+    --bar-2: #9ad5c2;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -26,10 +35,11 @@
       --text: #e8eaee;
       --muted: #9aa2b1;
       --border: #272b35;
-      --accent: #6b9bff;
-      --accent-soft: #1c2740;
-      --bar: #6b9bff;
-      --bar-2: #34466e;
+      --accent: #9ad5c2;
+      --accent-soft: #15302f;
+      --navy: #9ad5c2;
+      --bar: #9ad5c2;
+      --bar-2: #2c5a55;
     }
   }
   * { box-sizing: border-box; }
@@ -61,7 +71,7 @@
   nav ul a:hover { color: var(--text); text-decoration: none; }
   @media (max-width: 600px) { nav ul { gap: 12px; font-size: 14px; } nav .logo { display: none; } }
 
-  header { padding: 80px 0 56px; }
+  header { padding: 64px 0 48px; }
   .eyebrow { font-family: "JetBrains Mono", monospace; font-size: 14px; color: var(--accent); margin: 0 0 12px; }
   h1 { font-size: clamp(34px, 6vw, 52px); line-height: 1.1; margin: 0 0 20px; letter-spacing: -0.02em; }
   .lead { font-size: 18px; color: var(--muted); max-width: 680px; margin: 0 0 14px; }
@@ -70,18 +80,21 @@
     display: inline-block; padding: 10px 18px; border-radius: 8px; font-weight: 600; font-size: 15px;
     border: 1px solid var(--border); color: var(--text); background: var(--surface);
   }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary { background: var(--navy); border-color: var(--navy); color: #fff; }
+  @media (prefers-color-scheme: dark) { .btn.primary { color: #0f1342; } .lvl.adv { color: #0f1342; } }
   .btn:hover { text-decoration: none; filter: brightness(1.05); }
 
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 48px; }
   .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
-  .stat b { display: block; font-size: 24px; }
+  .stat b { display: block; font-size: 24px; color: var(--navy); }
+  .stat { border-top: 3px solid var(--bar); }
   .stat span { color: var(--muted); font-size: 14px; }
 
   section { padding: 56px 0; border-top: 1px solid var(--border); }
   h2 { font-size: 26px; margin: 0 0 24px; letter-spacing: -0.01em; }
 
-  .skill-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .skill-groups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  @media (max-width: 700px) { .skill-groups { grid-template-columns: 1fr; } }
   .group { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
   .group h3 { margin: 0 0 12px; font-size: 16px; }
   .group ul { list-style: none; margin: 0; padding: 0; }
@@ -157,6 +170,7 @@
     <a class="logo" href="#">Adriana Smock</a>
     <ul>
       <li><a href="#samples">Samples</a></li>
+      <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Work</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#synesis">Consulting</a></li>
@@ -172,13 +186,9 @@
     <p class="eyebrow">Power BI Developer · Food &amp; CPG · DAX · SQL</p>
     <h1>Hi, I'm Adriana Smock.<br>I build Power BI solutions that make data useful.</h1>
     <p class="lead">
-      I'm a Senior Sales &amp; Operations Analyst with hands-on experience developing and maintaining Power BI dashboards.
-      I independently build data models and table relationships, write DAX measures, and publish reports to Power BI Service with scheduled refreshes.
-    </p>
-    <p class="lead">
-      I use SQL, Snowflake, Power Query and Excel to support reporting for sales, inventory and operations.
-      I specialize in food and CPG: retail sell-through and SPINS data, distributor and inventory reporting, demand forecasting and trade spend.
-      My background in manufacturing and logistics helps me connect business requirements to clear KPIs and practical reporting solutions.
+      I'm a Senior Sales &amp; Operations Analyst who builds Power BI data models, DAX measures and dashboards, and publishes them to Power BI Service with scheduled refreshes.
+      I specialize in food and CPG: retail sell-through and SPINS data, distributor and inventory reporting, demand forecasting, trade spend and pricing.
+      My background in manufacturing and logistics helps me turn business questions into clear KPIs.
     </p>
     <div class="btns">
       <a class="btn primary" href="#samples">See Power BI samples</a>
@@ -187,12 +197,44 @@
     </div>
 
     <div class="stats">
-      <div class="stat"><b>Power BI</b><span>Dashboard development &amp; maintenance</span></div>
-      <div class="stat"><b>DAX &amp; models</b><span>Measures, calculations &amp; table relationships</span></div>
-      <div class="stat"><b>SQL &amp; Snowflake</b><span>Data retrieval &amp; analysis</span></div>
-      <div class="stat"><b>Power BI Service</b><span>Report publishing &amp; scheduled refreshes</span></div>
+      <div class="stat"><b>8+ hrs/week</b><span>saved by automating recurring reporting with Power BI &amp; Power Automate</span></div>
+      <div class="stat"><b>20% fewer</b><span>undeliverable international shipments after root-cause analysis</span></div>
+      <div class="stat"><b>Up to 40</b><span>people led in packaging production at peak</span></div>
+      <div class="stat"><b>6 samples</b><span>Power BI reports for food &amp; CPG, with DAX and data</span></div>
     </div>
   </header>
+
+  <!-- ===== POWER BI SAMPLES ===== -->
+  <section id="samples">
+    <h2>Power BI samples for food &amp; CPG</h2>
+    <p class="lead">Six reports built for Saltbrush Snack Co., a fictional snack brand, using invented data. Each sample includes the data model, the key DAX measures and the CSV files to rebuild it.</p>
+    <div class="samples">
+      <a class="sample" href="samples/pricing-profitability.html">
+        <img src="images/samples/pricing-profitability-thumb.jpg" alt="Pricing and profitability dashboard preview" loading="lazy" width="880" height="495">
+        <div><span class="new">New</span><h3>Pricing &amp; Profitability</h3><p>Price-volume-mix bridge, volume response to a price increase, price index vs. competitors and contribution per unit.</p><span class="go">View sample &rarr;</span></div>
+      </a>
+      <a class="sample" href="samples/sku-profitability.html">
+        <img src="images/samples/sku-profitability-thumb.jpg" alt="SKU profitability model preview" loading="lazy" width="880" height="495">
+        <div><h3>SKU Profitability Model</h3><p>A P&amp;L for every SKU after trade, COGS and freight, with a velocity vs. margin quadrant, a Pareto of contribution and unit economics by product line.</p><span class="go">View sample &rarr;</span></div>
+      </a>
+      <a class="sample" href="samples/retail-sell-through.html">
+        <img src="images/samples/retail-sell-through-thumb.jpg" alt="Retail sell-through dashboard preview" loading="lazy" width="880" height="495">
+        <div><h3>Retail Sell-Through</h3><p>Sales vs. year ago, distribution, velocity and promotion lift by retailer, from SPINS-style scan data.</p><span class="go">View sample &rarr;</span></div>
+      </a>
+      <a class="sample" href="samples/inventory-weeks-of-supply.html">
+        <img src="images/samples/inventory-weeks-of-supply-thumb.jpg" alt="Inventory and weeks of supply dashboard preview" loading="lazy" width="880" height="495">
+        <div><h3>Inventory &amp; Weeks of Supply</h3><p>Weeks of supply by product and distribution center, stockout and overstock flags, best-by risk and an action list.</p><span class="go">View sample &rarr;</span></div>
+      </a>
+      <a class="sample" href="samples/forecast-accuracy.html">
+        <img src="images/samples/forecast-accuracy-thumb.jpg" alt="Forecast accuracy dashboard preview" loading="lazy" width="880" height="495">
+        <div><h3>Forecast Accuracy &amp; S&amp;OP</h3><p>Forecast vs. actual, WMAPE, bias by product line and the SKUs driving the most error.</p><span class="go">View sample &rarr;</span></div>
+      </a>
+      <a class="sample" href="samples/trade-spend-margin.html">
+        <img src="images/samples/trade-spend-margin-thumb.jpg" alt="Trade spend and margin dashboard preview" loading="lazy" width="880" height="495">
+        <div><h3>Trade Spend &amp; Margin</h3><p>Gross-to-net waterfall, trade spend by customer, gross margin and promotion ROI.</p><span class="go">View sample &rarr;</span></div>
+      </a>
+    </div>
+  </section>
 
   <!-- ===== SKILLS =====
        Levels: class="lvl adv" Advanced · "lvl strong" Strong · "lvl mid" Intermediate · "lvl learn" Learning -->
@@ -252,37 +294,6 @@
     </div>
   </section>
 
-  <!-- ===== POWER BI SAMPLES ===== -->
-  <section id="samples">
-    <h2>Power BI samples for food &amp; CPG</h2>
-    <p class="lead">Six reports built for Saltbrush Snack Co., a fictional snack brand, using invented data. Each sample includes the data model, the key DAX measures and the CSV files to rebuild it.</p>
-    <div class="samples">
-      <a class="sample" href="samples/pricing-profitability.html">
-        <img src="images/samples/pricing-profitability-thumb.jpg" alt="Pricing and profitability dashboard preview" loading="lazy" width="880" height="495">
-        <div><span class="new">New</span><h3>Pricing &amp; Profitability</h3><p>Price-volume-mix bridge, volume response to a price increase, price index vs. competitors and contribution per unit.</p><span class="go">View sample &rarr;</span></div>
-      </a>
-      <a class="sample" href="samples/sku-profitability.html">
-        <img src="images/samples/sku-profitability-thumb.jpg" alt="SKU profitability model preview" loading="lazy" width="880" height="495">
-        <div><h3>SKU Profitability Model</h3><p>A P&amp;L for every SKU after trade, COGS and freight, with a velocity vs. margin quadrant, a Pareto of contribution and unit economics by product line.</p><span class="go">View sample &rarr;</span></div>
-      </a>
-      <a class="sample" href="samples/retail-sell-through.html">
-        <img src="images/samples/retail-sell-through-thumb.jpg" alt="Retail sell-through dashboard preview" loading="lazy" width="880" height="495">
-        <div><h3>Retail Sell-Through</h3><p>Sales vs. year ago, distribution, velocity and promotion lift by retailer, from SPINS-style scan data.</p><span class="go">View sample &rarr;</span></div>
-      </a>
-      <a class="sample" href="samples/inventory-weeks-of-supply.html">
-        <img src="images/samples/inventory-weeks-of-supply-thumb.jpg" alt="Inventory and weeks of supply dashboard preview" loading="lazy" width="880" height="495">
-        <div><h3>Inventory &amp; Weeks of Supply</h3><p>Weeks of supply by product and distribution center, stockout and overstock flags, best-by risk and an action list.</p><span class="go">View sample &rarr;</span></div>
-      </a>
-      <a class="sample" href="samples/forecast-accuracy.html">
-        <img src="images/samples/forecast-accuracy-thumb.jpg" alt="Forecast accuracy dashboard preview" loading="lazy" width="880" height="495">
-        <div><h3>Forecast Accuracy &amp; S&amp;OP</h3><p>Forecast vs. actual, WMAPE, bias by product line and the SKUs driving the most error.</p><span class="go">View sample &rarr;</span></div>
-      </a>
-      <a class="sample" href="samples/trade-spend-margin.html">
-        <img src="images/samples/trade-spend-margin-thumb.jpg" alt="Trade spend and margin dashboard preview" loading="lazy" width="880" height="495">
-        <div><h3>Trade Spend &amp; Margin</h3><p>Gross-to-net waterfall, trade spend by customer, gross margin and promotion ROI.</p><span class="go">View sample &rarr;</span></div>
-      </a>
-    </div>
-  </section>
 
   <!-- ===== PROJECTS =====
        When a public demo is ready, replace the <span class="soon">…</span> line with links, e.g.:

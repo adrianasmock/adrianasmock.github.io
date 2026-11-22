@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Adriana Smock · Business Intelligence Developer</title>
-<meta name="description" content="Adriana Smock — Business intelligence portfolio focused on Power BI development, DAX, data modeling, SQL, Snowflake and Power BI Service.">
+<title>Adriana Smock · Power BI Developer for Food &amp; CPG</title>
+<meta name="description" content="Adriana Smock — Business intelligence portfolio focused on Power BI development for food and CPG brands: sell-through, inventory, forecasting and trade spend dashboards, DAX, data modeling, SQL and Snowflake.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
@@ -129,6 +129,23 @@
   .edu span { color: var(--muted); font-size: 14px; }
 
   .contact p { color: var(--muted); max-width: 600px; }
+  .samples { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  @media (max-width: 700px) { .samples { grid-template-columns: 1fr; } }
+  .sample { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; color: var(--text); }
+  .sample:hover { text-decoration: none; border-color: var(--accent); }
+  .sample img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; border-bottom: 1px solid var(--border); }
+  .sample div { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
+  .sample h3 { margin: 0 0 6px; font-size: 17px; }
+  .sample p { margin: 0 0 12px; color: var(--muted); font-size: 14.5px; flex: 1; }
+  .sample.feature { grid-column: 1 / -1; flex-direction: row; }
+  .sample.feature img { width: 58%; border-bottom: 0; border-right: 1px solid var(--border); }
+  .sample.feature div { justify-content: center; }
+  .sample.feature p { flex: 0; }
+  .new { align-self: flex-start; font-family: "JetBrains Mono", monospace; font-size: 11px; padding: 2px 8px; border-radius: 999px; background: var(--accent); color: #fff; margin-bottom: 8px; }
+  @media (max-width: 700px) { .sample.feature { flex-direction: column; } .sample.feature img { width: 100%; border-right: 0; border-bottom: 1px solid var(--border); } }
+  .sample span.go { font-weight: 600; color: var(--accent); font-size: 14.5px; }
+  .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 8px; }
+  .services .group b { display: block; font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--accent); margin-bottom: 6px; }
   footer { padding: 32px 0 48px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--border); }
 </style>
 </head>
@@ -138,9 +155,10 @@
   <div class="wrap">
     <a class="logo" href="#">Adriana Smock</a>
     <ul>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
+      <li><a href="#samples">Samples</a></li>
+      <li><a href="#projects">Work</a></li>
       <li><a href="#experience">Experience</a></li>
+      <li><a href="#synesis">Consulting</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
@@ -150,7 +168,7 @@
 
   <!-- ===== INTRO ===== -->
   <header>
-    <p class="eyebrow">Business Intelligence Developer · Power BI · DAX · SQL</p>
+    <p class="eyebrow">Power BI Developer · Food &amp; CPG · DAX · SQL</p>
     <h1>Hi, I'm Adriana Smock.<br>I build Power BI solutions that make data useful.</h1>
     <p class="lead">
       I'm a Senior Sales &amp; Operations Analyst with hands-on experience developing and maintaining Power BI dashboards.
@@ -158,10 +176,11 @@
     </p>
     <p class="lead">
       I use SQL, Snowflake, Power Query and Excel to support reporting for sales, inventory and operations.
+      I specialize in food and CPG: retail sell-through and SPINS data, distributor and inventory reporting, demand forecasting and trade spend.
       My background in manufacturing and logistics helps me connect business requirements to clear KPIs and practical reporting solutions.
     </p>
     <div class="btns">
-      <a class="btn primary" href="#projects">See my projects</a>
+      <a class="btn primary" href="#samples">See Power BI samples</a>
       <a class="btn" href="resume.pdf">Download résumé</a> <!-- upload your résumé as resume.pdf -->
       <a class="btn" href="https://www.linkedin.com/in/adriana-smock">LinkedIn</a>
     </div>
@@ -229,6 +248,34 @@
         </ul>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ===== POWER BI SAMPLES ===== -->
+  <section id="samples">
+    <h2>Power BI samples for food &amp; CPG</h2>
+    <p class="lead">Five reports built for Saltbrush Snack Co., a fictional snack brand, using invented data. Each sample includes the data model, the key DAX measures and the CSV files to rebuild it.</p>
+    <div class="samples">
+      <a class="sample feature" href="samples/sku-profitability.html">
+        <img src="images/samples/sku-profitability-thumb.jpg" alt="SKU profitability model preview" loading="lazy" width="880" height="495">
+        <div><span class="new">New</span><h3>SKU Profitability Model</h3><p>A P&amp;L for every SKU after trade, COGS and freight, with a velocity vs. margin quadrant, a Pareto of contribution and unit economics by product line.</p><span class="go">View sample &rarr;</span></div>
+      </a>
+      <a class="sample" href="samples/retail-sell-through.html">
+        <img src="images/samples/retail-sell-through-thumb.jpg" alt="Retail sell-through dashboard preview" loading="lazy" width="880" height="495">
+        <div><h3>Retail Sell-Through</h3><p>Sales vs. year ago, distribution, velocity and promotion lift by retailer, from SPINS-style scan data.</p><span class="go">View sample &rarr;</span></div>
+      </a>
+      <a class="sample" href="samples/inventory-weeks-of-supply.html">
+        <img src="images/samples/inventory-weeks-of-supply-thumb.jpg" alt="Inventory and weeks of supply dashboard preview" loading="lazy" width="880" height="495">
+        <div><h3>Inventory &amp; Weeks of Supply</h3><p>Weeks of supply by product and distribution center, stockout and overstock flags, best-by risk and an action list.</p><span class="go">View sample &rarr;</span></div>
+      </a>
+      <a class="sample" href="samples/forecast-accuracy.html">
+        <img src="images/samples/forecast-accuracy-thumb.jpg" alt="Forecast accuracy dashboard preview" loading="lazy" width="880" height="495">
+        <div><h3>Forecast Accuracy &amp; S&amp;OP</h3><p>Forecast vs. actual, WMAPE, bias by product line and the SKUs driving the most error.</p><span class="go">View sample &rarr;</span></div>
+      </a>
+      <a class="sample" href="samples/trade-spend-margin.html">
+        <img src="images/samples/trade-spend-margin-thumb.jpg" alt="Trade spend and margin dashboard preview" loading="lazy" width="880" height="495">
+        <div><h3>Trade Spend &amp; Margin</h3><p>Gross-to-net waterfall, trade spend by customer, gross margin and promotion ROI.</p><span class="go">View sample &rarr;</span></div>
+      </a>
     </div>
   </section>
 
@@ -351,10 +398,26 @@
     </div>
   </section>
 
+  <!-- ===== CONSULTING ===== -->
+  <section id="synesis">
+    <p class="eyebrow">Consulting · SYNESIS Data &amp; Analytics</p>
+    <h2>Analytics for growing food &amp; CPG brands</h2>
+    <p class="lead">Through SYNESIS Data &amp; Analytics, I help food and CPG brands turn retailer, distributor, inventory and sales data into Power BI reporting their teams use every week. I also work with manufacturers and logistics and distribution companies on production, inventory and supply chain reporting.</p>
+    <div class="services">
+      <div class="group"><b>01</b><h3>Project-Based Analytics</h3><p>A one-time engagement with a clear scope, timeline and deliverable: Power BI dashboards, reporting automation, distributor and inventory reporting, margin and SKU profitability analysis.</p></div>
+      <div class="group"><b>02</b><h3>Managed Analytics</h3><p>Your reporting kept running: dashboard maintenance, scheduled refreshes, weekly or monthly KPI reporting, data validation and small updates as needs change.</p></div>
+      <div class="group"><b>03</b><h3>Fractional Analytics</h3><p>Dedicated, part-time analytics expertise: regular reporting, demand and sales forecasting, trade and promotion analysis, and recurring meetings with your team.</p></div>
+    </div>
+    <div class="btns">
+      <a class="btn primary" href="https://synesisanalytics.com/consultation">Book a free consultation</a>
+      <a class="btn" href="https://synesisanalytics.com">Visit synesisanalytics.com</a>
+    </div>
+  </section>
+
   <!-- ===== CONTACT ===== -->
   <section id="contact" class="contact">
     <h2>Let's work together</h2>
-    <p>I'm seeking Business Intelligence Developer and Power BI Developer opportunities where I can build reliable reporting, develop data models and help teams act on their data. I'm also open to analytics consulting and fractional opportunities.</p>
+    <p>I'm seeking Business Intelligence Developer and Power BI Developer opportunities where I can build reliable reporting, develop data models and help teams act on their data. For project, managed or fractional analytics work, see <a href="#synesis">SYNESIS</a> or <a href="https://synesisanalytics.com/consultation">book a consultation</a>.</p>
     <div class="btns">
       <a class="btn primary" href="mailto:adrianasmock@gmail.com">adrianasmock@gmail.com</a>
       <a class="btn" href="https://www.linkedin.com/in/adriana-smock">LinkedIn</a>

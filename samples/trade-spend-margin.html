@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trade Spend & Margin Dashboard · Power BI sample · Adriana Smock</title>
+<meta name="description" content="Where does gross sales go before it becomes profit, which customers cost the most in trade, and do promotions pay for themselves? This report walks from gross to net to gross profit for each customer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>:root{--bg:#f7f8fa;--surface:#fff;--text:#16181d;--muted:#5b6270;--border:#e3e6eb;--accent:#2f6fed;--accent-soft:#e8effd;--code:#0f1342;--code-text:#e8eaee}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--surface:#171a21;--text:#e8eaee;--muted:#9aa2b1;--border:#272b35;--accent:#6b9bff;--accent-soft:#1c2740;--code:#0b0d12}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 Inter,system-ui,sans-serif}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px}
+nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}nav .logo{font-weight:700;color:var(--text)}
+nav ul{list-style:none;display:flex;gap:20px;margin:0;padding:0;font-size:15px}nav ul a{color:var(--muted)}
+header{padding:56px 0 28px}.eyebrow{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--accent);margin:0 0 12px}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.12;margin:0 0 16px;letter-spacing:-.02em}
+.lead{font-size:18px;color:var(--muted);max-width:720px;margin:0 0 12px}
+.note{display:inline-block;font-size:14px;color:var(--muted);background:var(--accent-soft);border-radius:8px;padding:8px 12px;margin-top:8px}
+figure{margin:24px 0 8px}figure img{width:100%;border-radius:10px;border:1px solid var(--border);display:block}
+figcaption{font-size:14px;color:var(--muted);margin-top:8px}
+section{padding:40px 0;border-top:1px solid var(--border)}h2{font-size:24px;margin:0 0 16px;letter-spacing:-.01em}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}.box h3{margin:0 0 8px;font-size:16px}
+.box p,.box li{color:var(--muted);font-size:15px}.box ul{margin:0;padding-left:18px}.box p{margin:0}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:9px 12px;border-top:1px solid var(--border);vertical-align:top}th{background:var(--accent-soft);color:var(--text);border-top:0}
+td code{font-family:"JetBrains Mono",monospace;font-size:13px}
+pre{background:var(--code);color:var(--code-text);border-radius:12px;padding:18px;overflow-x:auto;font:13px/1.55 "JetBrains Mono",monospace;margin:0 0 16px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}.tag{font-family:"JetBrains Mono",monospace;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.btn{display:inline-block;padding:10px 18px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--border);color:var(--text);background:var(--surface)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn:hover{text-decoration:none;filter:brightness(1.05)}
+.more{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.more a{display:block;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;color:var(--text);font-weight:600}
+footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px solid var(--border)}</style></head><body>
+<nav><div class="wrap"><a class="logo" href="../index.html">Adriana Smock</a><ul>
+<li><a href="../index.html#samples">Samples</a></li><li><a href="../index.html#projects">Work</a></li><li><a href="../index.html#contact">Contact</a></li></ul></div></nav>
+<div class="wrap">
+<header>
+  <p class="eyebrow">Power BI sample · Finance · Gross-to-net</p>
+  <h1>Trade Spend & Margin Dashboard</h1>
+  <p class="lead">Where does gross sales go before it becomes profit, which customers cost the most in trade, and do promotions pay for themselves? This report walks from gross to net to gross profit for each customer.</p>
+  <span class="note">Saltbrush Snack Co. is a fictional brand. Every number on this page comes from an invented dataset, not from an employer or client.</span>
+  <figure><a href="../images/samples/trade-spend-margin.png"><img src="../images/samples/trade-spend-margin.png" alt="Trade Spend & Margin Dashboard preview for the fictional brand Saltbrush Snack Co." width="2400" height="1350"></a>
+  <figcaption>Dashboard preview. Click to open full size.</figcaption></figure>
+  <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Gross-to-net</span><span class="tag">Trade promotion</span><span class="tag">Customer P&L</span></div>
+</header>
+<section><div class="grid">
+  <div class="box"><h3>What the report answers</h3><ul><li>A gross-to-net waterfall: off-invoice, scan-downs, slotting, spoilage and COGS</li><li>Trade spend as a % of gross by customer, against the average</li><li>Gross margin % by customer</li><li>A customer P&amp;L with promotion ROI</li></ul></div>
+  <div class="box"><h3>What the sample data shows</h3><p>Trade spend is 10.6% of gross sales and gross margin is 38.5%. Corner Convenience and Mountain Market spend the most on trade, and their promotions lose money (–50% and –32% ROI), while Summit Grocery&#x27;s promotions return +22%. That points to moving promo dollars rather than cutting them.</p></div>
+</div></section>
+<section><h2>Data model</h2>
+  <p class="lead" style="font-size:16px">A star schema: one fact table with the numbers, and dimension tables for filtering. Relationships are one-to-many from each dimension to the fact table on its ID or key column.</p>
+  <table><tr><th>Table</th><th>Contents</th></tr><tr><td><code>fact_trade_pnl</code></td><td>Month × customer: units, gross sales, off-invoice, scan-down spend, slotting, spoilage, COGS, incremental promo units</td></tr><tr><td><code>dim_retailer</code></td><td>Customer, channel, total stores</td></tr></table>
+</section>
+<section><h2>Key DAX measures</h2><pre><code>Gross Sales = SUM ( fact_trade_pnl[GrossSales] )
+
+Trade Spend =
+SUM ( fact_trade_pnl[OffInvoice] ) + SUM ( fact_trade_pnl[ScanDownSpend] )
+    + SUM ( fact_trade_pnl[Slotting] ) + SUM ( fact_trade_pnl[Spoilage] )
+
+Net Sales     = [Gross Sales] - [Trade Spend]
+Gross Profit  = [Net Sales] - SUM ( fact_trade_pnl[COGS] )
+Gross Margin %  = DIVIDE ( [Gross Profit], [Net Sales] )
+Trade % of Gross = DIVIDE ( [Trade Spend], [Gross Sales] )
+
+-- Gross profit per unit before trade, applied to the extra units a promotion sold
+Incremental Promo GP =
+SUM ( fact_trade_pnl[IncrementalUnits] )
+    * DIVIDE ( [Gross Sales] - SUM ( fact_trade_pnl[COGS] ), SUM ( fact_trade_pnl[Units] ) )
+
+Promo ROI =
+DIVIDE (
+    [Incremental Promo GP] - SUM ( fact_trade_pnl[ScanDownSpend] ),
+    SUM ( fact_trade_pnl[ScanDownSpend] )
+)</code></pre></section>
+<section><h2>Sample data</h2>
+  <p>Download the CSV files to rebuild this report: <a href="data/fact_trade_pnl.csv">fact_trade_pnl.csv</a> · <a href="data/dim_retailer.csv">dim_retailer.csv</a>, or get <a href="data/saltbrush-sample-data.zip">all sample files (.zip)</a>.</p>
+  <div class="btns"><a class="btn primary" href="https://synesisanalytics.com/consultation">Want this for your brand? Book a consultation</a><a class="btn" href="../index.html#samples">All samples</a></div>
+</section>
+<section><h2>More samples</h2><div class="more"><a href="retail-sell-through.html">Retail sell-through &rarr;</a><a href="inventory-weeks-of-supply.html">Inventory &amp; weeks of supply &rarr;</a><a href="forecast-accuracy.html">Forecast accuracy &amp; S&amp;OP &rarr;</a><a href="sku-profitability.html">SKU profitability &rarr;</a></div></section>
+</div>
+<footer><div class="wrap">© 2026 Adriana Smock · Sample built with invented data</div></footer>
+</body></html>

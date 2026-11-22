@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Retail Sell-Through Dashboard · Power BI sample · Adriana Smock</title>
+<meta name="description" content="How is the brand selling at each retailer, and is growth coming from more stores or from each store selling more? This report answers that for a fictional snack brand across six retailers and 104 weeks of scan data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>:root{--bg:#f7f8fa;--surface:#fff;--text:#16181d;--muted:#5b6270;--border:#e3e6eb;--accent:#2f6fed;--accent-soft:#e8effd;--code:#0f1342;--code-text:#e8eaee}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--surface:#171a21;--text:#e8eaee;--muted:#9aa2b1;--border:#272b35;--accent:#6b9bff;--accent-soft:#1c2740;--code:#0b0d12}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 Inter,system-ui,sans-serif}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px}
+nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}nav .logo{font-weight:700;color:var(--text)}
+nav ul{list-style:none;display:flex;gap:20px;margin:0;padding:0;font-size:15px}nav ul a{color:var(--muted)}
+header{padding:56px 0 28px}.eyebrow{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--accent);margin:0 0 12px}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.12;margin:0 0 16px;letter-spacing:-.02em}
+.lead{font-size:18px;color:var(--muted);max-width:720px;margin:0 0 12px}
+.note{display:inline-block;font-size:14px;color:var(--muted);background:var(--accent-soft);border-radius:8px;padding:8px 12px;margin-top:8px}
+figure{margin:24px 0 8px}figure img{width:100%;border-radius:10px;border:1px solid var(--border);display:block}
+figcaption{font-size:14px;color:var(--muted);margin-top:8px}
+section{padding:40px 0;border-top:1px solid var(--border)}h2{font-size:24px;margin:0 0 16px;letter-spacing:-.01em}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}.box h3{margin:0 0 8px;font-size:16px}
+.box p,.box li{color:var(--muted);font-size:15px}.box ul{margin:0;padding-left:18px}.box p{margin:0}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:9px 12px;border-top:1px solid var(--border);vertical-align:top}th{background:var(--accent-soft);color:var(--text);border-top:0}
+td code{font-family:"JetBrains Mono",monospace;font-size:13px}
+pre{background:var(--code);color:var(--code-text);border-radius:12px;padding:18px;overflow-x:auto;font:13px/1.55 "JetBrains Mono",monospace;margin:0 0 16px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}.tag{font-family:"JetBrains Mono",monospace;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.btn{display:inline-block;padding:10px 18px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--border);color:var(--text);background:var(--surface)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn:hover{text-decoration:none;filter:brightness(1.05)}
+.more{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.more a{display:block;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;color:var(--text);font-weight:600}
+footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px solid var(--border)}</style></head><body>
+<nav><div class="wrap"><a class="logo" href="../index.html">Adriana Smock</a><ul>
+<li><a href="../index.html#samples">Samples</a></li><li><a href="../index.html#projects">Work</a></li><li><a href="../index.html#contact">Contact</a></li></ul></div></nav>
+<div class="wrap">
+<header>
+  <p class="eyebrow">Power BI sample · Sales · SPINS-style scan data</p>
+  <h1>Retail Sell-Through Dashboard</h1>
+  <p class="lead">How is the brand selling at each retailer, and is growth coming from more stores or from each store selling more? This report answers that for a fictional snack brand across six retailers and 104 weeks of scan data.</p>
+  <span class="note">Saltbrush Snack Co. is a fictional brand. Every number on this page comes from an invented dataset, not from an employer or client.</span>
+  <figure><a href="../images/samples/retail-sell-through.png"><img src="../images/samples/retail-sell-through.png" alt="Retail Sell-Through Dashboard preview for the fictional brand Saltbrush Snack Co." width="2400" height="1350"></a>
+  <figcaption>Dashboard preview. Click to open full size.</figcaption></figure>
+  <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Time intelligence</span><span class="tag">SPINS-style data</span><span class="tag">Retail analytics</span></div>
+</header>
+<section><div class="grid">
+  <div class="box"><h3>What the report answers</h3><ul><li>Retail $ and units, latest 52 weeks vs. year ago</li><li>Distribution (% of stores selling) and how many points it gained</li><li>Velocity: $ per store, per SKU, per week, by product line</li><li>Promotion lift: base vs. promo velocity by retailer</li></ul></div>
+  <div class="box"><h3>What the sample data shows</h3><p>Sales grew 26.7% vs. year ago. Distribution gained 8.8 points and velocity grew 10.4%, so growth came from both new stores and existing stores selling more. Promotions lifted velocity most at Summit Grocery and least at Corner Convenience, which is where a trade conversation should start.</p></div>
+</div></section>
+<section><h2>Data model</h2>
+  <p class="lead" style="font-size:16px">A star schema: one fact table with the numbers, and dimension tables for filtering. Relationships are one-to-many from each dimension to the fact table on its ID or key column.</p>
+  <table><tr><th>Table</th><th>Contents</th></tr><tr><td><code>fact_retail_sales</code></td><td>Week × retailer × SKU: units, dollars, stores selling, total stores, promo flag</td></tr><tr><td><code>dim_week</code></td><td>Week ending, year, month, fiscal week (1–104)</td></tr><tr><td><code>dim_product</code></td><td>SKU, product, product line, flavor, list price, unit cost</td></tr><tr><td><code>dim_retailer</code></td><td>Retailer, channel, total stores</td></tr></table>
+</section>
+<section><h2>Key DAX measures</h2><pre><code>Retail $ = SUM ( fact_retail_sales[Dollars] )
+
+-- Same 52-week window shifted back one year, using the fiscal week number
+Retail $ YA =
+VAR FirstWk = MIN ( dim_week[FiscalWeek] ) - 52
+VAR LastWk  = MAX ( dim_week[FiscalWeek] ) - 52
+RETURN
+    CALCULATE (
+        [Retail $],
+        REMOVEFILTERS ( dim_week ),
+        dim_week[FiscalWeek] &gt;= FirstWk,
+        dim_week[FiscalWeek] &lt;= LastWk
+    )
+
+Retail $ % Chg YA = DIVIDE ( [Retail $] - [Retail $ YA], [Retail $ YA] )
+
+-- Share of the retailer&#x27;s stores selling the item (a %ACV proxy)
+% Stores Selling =
+DIVIDE ( SUM ( fact_retail_sales[StoresSelling] ), SUM ( fact_retail_sales[TotalStores] ) )
+
+Velocity $/Store/SKU/Wk =
+DIVIDE ( [Retail $], SUM ( fact_retail_sales[StoresSelling] ) )
+
+Promo Velocity =
+DIVIDE (
+    CALCULATE ( SUM ( fact_retail_sales[Units] ), fact_retail_sales[PromoFlag] = 1 ),
+    CALCULATE ( SUM ( fact_retail_sales[StoresSelling] ), fact_retail_sales[PromoFlag] = 1 )
+)
+
+Base Velocity =
+DIVIDE (
+    CALCULATE ( SUM ( fact_retail_sales[Units] ), fact_retail_sales[PromoFlag] = 0 ),
+    CALCULATE ( SUM ( fact_retail_sales[StoresSelling] ), fact_retail_sales[PromoFlag] = 0 )
+)
+
+Promo Lift % = DIVIDE ( [Promo Velocity], [Base Velocity] ) - 1</code></pre></section>
+<section><h2>Sample data</h2>
+  <p>Download the CSV files to rebuild this report: <a href="data/fact_retail_sales.csv">fact_retail_sales.csv</a> · <a href="data/dim_week.csv">dim_week.csv</a> · <a href="data/dim_product.csv">dim_product.csv</a> · <a href="data/dim_retailer.csv">dim_retailer.csv</a>, or get <a href="data/saltbrush-sample-data.zip">all sample files (.zip)</a>.</p>
+  <div class="btns"><a class="btn primary" href="https://synesisanalytics.com/consultation">Want this for your brand? Book a consultation</a><a class="btn" href="../index.html#samples">All samples</a></div>
+</section>
+<section><h2>More samples</h2><div class="more"><a href="inventory-weeks-of-supply.html">Inventory &amp; weeks of supply &rarr;</a><a href="forecast-accuracy.html">Forecast accuracy &amp; S&amp;OP &rarr;</a><a href="trade-spend-margin.html">Trade spend &amp; margin &rarr;</a><a href="sku-profitability.html">SKU profitability &rarr;</a></div></section>
+</div>
+<footer><div class="wrap">© 2026 Adriana Smock · Sample built with invented data</div></footer>
+</body></html>

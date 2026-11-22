@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="vendor/fa/css/all.min.css">
+<script src="vendor/chart.umd.min.js"></script>
+<script src="vendor/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root{--navy:#0F1342;--navy2:#1B2266;--teal:#009393;--mint:#9AD5C2;--mint2:#E3F4EE;--bg:#EDF2F6;--card:#fff;--txt:#16181D;--muted:#6B7385;--line:#E4E8EE;--red:#D64545;--orange:#E8912D}
+*{box-sizing:border-box;margin:0}
+body{width:1600px;height:900px;overflow:hidden;font-family:Inter,sans-serif;background:var(--bg);color:var(--txt);display:flex}
+/* sidebar */
+aside{width:222px;height:900px;background:linear-gradient(180deg,#0F1342 0%,#151C5C 70%,#0F1342 100%);color:#fff;display:flex;flex-direction:column;padding:22px 14px 16px}
+.logo{display:flex;align-items:center;gap:11px;padding:0 6px 22px;border-bottom:1px solid rgba(255,255,255,.12)}
+.logo i{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--mint),var(--teal));color:var(--navy);display:grid;place-items:center;font-size:19px}
+.logo b{display:block;font-size:17px;letter-spacing:.08em;font-weight:800}.logo span{font-size:11px;color:var(--mint);letter-spacing:.04em}
+.navlbl{font-size:10px;letter-spacing:.14em;color:#8C93C8;margin:20px 8px 8px;font-weight:700}
+nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:9px;color:#D5D9F2;font-size:13.5px;font-weight:500;text-decoration:none;margin-bottom:3px}
+nav a i{width:18px;text-align:center;color:var(--mint);font-size:14px}
+nav a.on{background:var(--mint);color:var(--navy);font-weight:700;box-shadow:0 4px 14px rgba(154,213,194,.25)}nav a.on i{color:var(--navy)}
+.upd{margin-top:auto;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px;display:flex;gap:10px;font-size:11.5px;color:#C7CCEA;line-height:1.45}
+.upd i{color:var(--mint);font-size:18px;margin-top:2px}.upd b{color:#fff;font-weight:600}
+.tagline{font-size:15px;font-weight:700;line-height:1.3;margin:16px 6px 6px}.tagline span{color:var(--mint)}
+.fict{font-size:10.5px;color:#8C93C8;margin:0 6px}
+/* main */
+main{flex:1;padding:16px 18px 10px;display:flex;flex-direction:column;gap:11px;min-width:0}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;height:62px}
+h1{font-size:30px;font-weight:800;letter-spacing:.01em;color:var(--navy);line-height:1}h1 span{color:var(--teal)}
+.sub{font-size:13px;color:var(--muted);margin-top:7px}
+.slicers{display:flex;gap:10px;align-items:flex-end}
+.sl label{display:block;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.sl div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 11px;font-size:12.5px;display:flex;align-items:center;gap:9px;min-width:150px;box-shadow:0 1px 2px rgba(15,19,66,.04)}
+.sl div i:first-child{color:var(--teal)}.sl div i:last-child{margin-left:auto;color:var(--muted);font-size:10px}
+.btn{background:var(--navy);color:#fff;border-radius:8px;padding:9px 14px;font-size:12.5px;font-weight:600;display:flex;gap:8px;align-items:center;height:36px}.btn i{color:var(--mint)}
+.kpis{display:grid;gap:11px;height:120px}
+.kpi{background:var(--card);border-radius:12px;padding:13px 14px 10px;display:grid;grid-template-columns:44px 1fr;column-gap:12px;box-shadow:0 1px 3px rgba(15,19,66,.06);border:1px solid var(--line);position:relative;overflow:hidden}
+.kpi .ic{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--teal),#0B6F86);color:#fff;display:grid;place-items:center;font-size:18px}
+.kpi.warn .ic{background:linear-gradient(135deg,#F0A447,#D9772A)}.kpi.bad .ic{background:linear-gradient(135deg,#E36A5F,#C23B3B)}
+.kpi .lb{font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--muted);text-transform:uppercase;white-space:nowrap}
+.kpi .v{font-size:25px;font-weight:800;color:var(--navy);line-height:1.15;margin-top:2px}
+.kpi .d{font-size:11.5px;font-weight:600;margin-top:3px}.up{color:var(--teal)}.dn{color:var(--red)}.neu{color:var(--muted)}.or{color:var(--orange)}
+.kpi canvas{grid-column:2;margin-top:4px}
+.grid{flex:1;display:grid;gap:11px;min-height:0}
+.p{background:var(--card);border-radius:12px;padding:12px 14px 10px;box-shadow:0 1px 3px rgba(15,19,66,.06);border:1px solid var(--line);display:flex;flex-direction:column;min-height:0;min-width:0}
+.p h3{font-size:12px;font-weight:800;color:var(--navy);letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.p h3 .n{width:20px;height:20px;border-radius:50%;background:var(--mint2);color:var(--teal);font-size:11px;display:grid;place-items:center}
+.p h3 small{margin-left:auto;font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0;font-size:11px;display:flex;gap:12px}
+.lg{display:inline-flex;align-items:center;gap:5px}.lg i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.cv{flex:1;position:relative;min-height:0}
+.note{font-size:10.5px;color:var(--muted);background:#F4F7F9;border-radius:6px;padding:5px 8px;margin-top:6px;display:flex;gap:6px;align-items:center}.note i{color:var(--teal)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{white-space:nowrap;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:left;padding:5px 6px;border-bottom:1px solid var(--line);font-weight:700}
+table.tight td{padding:1.6px 6px;font-size:11.5px;line-height:1.4}table.tight .pill{padding:0 7px;font-size:10.5px;line-height:1.55}table.tight th{padding:4px 6px}
+td{padding:6.5px 6px;border-bottom:1px solid #F0F2F5;white-space:nowrap}
+tr:nth-child(even) td{background:#FAFBFC}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700}
+.pill.g{background:#DDF3EC;color:#007A7A}.pill.r{background:#FBE3E1;color:#B73636}.pill.o{background:#FDEBD5;color:#B5651A}
+.bar{height:8px;border-radius:4px;background:var(--mint);display:inline-block;vertical-align:middle;margin-right:6px}
+.ins{list-style:none;padding:0;display:flex;flex-direction:column;gap:9px;margin-top:2px}
+.ins li{display:grid;grid-template-columns:24px 1fr;gap:9px;font-size:12px;line-height:1.4;color:#2B3040}
+.ins li i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:11px;color:#fff;background:var(--teal)}
+.ins li.r i{background:var(--red)}.ins li.o i{background:var(--orange)}.ins li.n i{background:var(--navy)}
+.ins b{color:var(--navy)}
+.heat{display:grid;gap:3px;font-size:11.5px;flex:1}
+.heat .h{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;text-align:center;align-self:end}
+.heat .rl{color:#2B3040;align-self:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.heat .c{border-radius:5px;display:grid;place-items:center;font-weight:700}
+.keys{display:flex;gap:10px;font-size:10.5px;color:var(--muted);margin-bottom:8px;flex-wrap:wrap}.keys span{display:flex;align-items:center;gap:4px}.keys i{width:10px;height:10px;border-radius:3px}
+footer{height:24px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted)}
+footer i{color:var(--teal);margin-right:6px}footer b{color:var(--navy)}
+.sl div,.btn{cursor:pointer}.sl div:hover{border-color:var(--teal)}
+nav a{cursor:pointer}nav a:not(.on):hover{background:rgba(255,255,255,.08);color:#fff;text-decoration:none}
+tr:hover td{background:#E3F4EE!important}.heat .c{cursor:default}.heat .c:hover{outline:2px solid var(--navy)}
+#toast{position:fixed;left:50%;top:80px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;box-shadow:0 10px 30px rgba(15,19,66,.3);opacity:0;transition:opacity .25s;pointer-events:none;z-index:9}
+#toast.show{opacity:1}#toast b{color:var(--mint)}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<aside>
+  <div class="logo"><i class="fa-solid fa-chart-column"></i><div><b>SALTBRUSH</b><span>Snack Co. · Analytics</span></div></div>
+  <div class="navlbl">REPORTS</div>
+  <nav id="nav"></nav>
+  <div class="navlbl">MORE</div>
+  <nav><a id="dm" href="#" target="_top"><i class="fa-solid fa-table-list"></i>Data model &amp; DAX</a><a href="../index.html#samples" target="_top"><i class="fa-solid fa-arrow-left"></i>Back to portfolio</a></nav>
+  <div class="upd"><i class="fa-regular fa-calendar-check"></i><div>Last refreshed<br><b>Nov 16, 2026 · 6:00 AM</b><br>Data through week 104</div></div>
+  <div class="tagline">Better data.<br><span>Better shelf decisions.</span></div>
+  <div class="fict">Fictional brand · invented data</div>
+</aside>
+<div id="toast"></div><main>
+  <header><div><h1 id="title"></h1><div class="sub" id="sub"></div></div>
+    <div class="slicers" id="slicers"></div></header>
+  <div class="kpis" id="kpis"></div>
+  <div class="grid" id="grid"></div>
+  <footer><span><i class="fa-solid fa-circle-info"></i>Sample Power BI report for Saltbrush Snack Co., a fictional brand. All figures come from an invented dataset.</span><span>Built by <b>Adriana Smock</b></span></footer>
+</main>
+<script>
+Chart.register(ChartDataLabels);
+Chart.defaults.font.family="Inter"; Chart.defaults.font.size=11; Chart.defaults.color="#6B7385";
+Chart.defaults.animation=false; Chart.defaults.plugins.legend.display=false; Chart.defaults.plugins.datalabels.display=false;
+Chart.defaults.maintainAspectRatio=false; Chart.defaults.plugins.tooltip.enabled=true;
+Chart.defaults.interaction={mode:"index",intersect:false,axis:"x"};
+Object.assign(Chart.defaults.plugins.tooltip,{backgroundColor:"#0F1342",titleColor:"#9AD5C2",bodyColor:"#fff",padding:10,cornerRadius:8,titleFont:{weight:"700"},boxPadding:4,displayColors:true});
+Chart.defaults.plugins.tooltip.callbacks.label=(c=>{let v=c.raw;if(Array.isArray(v))v=Math.abs(v[1]-v[0]);if(v&&typeof v=="object"&&"y" in v)return ` ${v.n}: velocity ${v.x.toFixed(2)}, CM ${v.y.toFixed(1)}%`;
+  const d=c.dataset;const n=typeof v=="number"?v.toLocaleString(undefined,{maximumFractionDigits:Math.abs(v)<100?2:0}):v;return ` ${d.label?d.label+": ":""}${d.pre||""}${n}${d.suf||""}`;});
+const C={navy:"#0F1342",teal:"#009393",mint:"#9AD5C2",gray:"#C5CAD4",red:"#D64545",orange:"#E8912D",light:"#E3F4EE",navy2:"#3B4A9E"};
+const page=new URLSearchParams(location.search).get("p")||"sell";
+const M=(v,d=1)=>Math.abs(v)>=1e6?`$${(v/1e6).toFixed(d==1?2:d)}M`:`$${(v/1e3).toFixed(v>=1e5?0:1)}K`;
+const K=(v)=>Math.abs(v)>=1e6?`${(v/1e6).toFixed(2)}M`:`${(v/1e3).toFixed(0)}K`;
+const P=(v,d=1)=>`${(v*100).toFixed(d)}%`, SP=(v,d=1)=>`${v>=0?"+":""}${(v*100).toFixed(d)}%`;
+const arr=(v,good=true)=>`<span class="${good?"up":"dn"}"><i class="fa-solid fa-caret-${v>=0?"up":"down"}"></i> `;
+const grid=document.getElementById("grid");
+const NAV=[["sell","fa-cart-shopping","Sell-Through"],["inv","fa-warehouse","Inventory & Supply"],["fc","fa-chart-line","Forecast & S&OP"],["trade","fa-hand-holding-dollar","Trade & Margin"],["sku","fa-coins","SKU Profitability"],["price","fa-tag","Pricing & Profit"]];
+document.getElementById("nav").innerHTML=NAV.map(([k,i,t])=>`<a href="?p=${k}" class="${k==page?"on":""}"><i class="fa-solid ${i}"></i>${t}</a>`).join("");
+const SLUG={sell:"retail-sell-through",inv:"inventory-weeks-of-supply",fc:"forecast-accuracy",trade:"trade-spend-margin",sku:"sku-profitability",price:"pricing-profitability"};
+document.getElementById("dm").href=`../samples/${SLUG[page]}.html`;
+function head(t1,t2,sub,sl){document.getElementById("title").innerHTML=`<span>${t1}</span> ${t2}`;document.getElementById("sub").textContent=sub;
+ document.getElementById("slicers").innerHTML=sl.map(([l,i,v])=>`<div class="sl"><label>${l}</label><div><i class="fa-solid ${i}"></i>${v}<i class="fa-solid fa-chevron-down"></i></div></div>`).join("")+`<div class="btn"><i class="fa-solid fa-download"></i>Export</div>`;}
+function kpis(items){const el=document.getElementById("kpis");el.style.gridTemplateColumns=`repeat(${items.length},1fr)`;
+ el.innerHTML=items.map((k,i)=>`<div class="kpi ${k.cls||""}"><div class="ic"><i class="fa-solid ${k.icon}"></i></div><div><div class="lb">${k.label}</div><div class="v">${k.value}</div><div class="d">${k.delta}</div></div><canvas id="sp${i}" width="10" height="26"></canvas></div>`).join("");
+ items.forEach((k,i)=>{const cv=document.getElementById("sp"+i);const w=cv.parentElement.clientWidth-14-44-12-4;cv.width=w;cv.style.width=w+"px";cv.style.height="26px";new Chart(cv,{type:"line",data:{labels:k.spark.map((_,j)=>j),datasets:[{data:k.spark,borderColor:k.sc||C.teal,borderWidth:1.8,pointRadius:0,fill:true,backgroundColor:(k.sc||C.teal)+"22",tension:.35}]},options:{responsive:false,plugins:{tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},layout:{padding:2}}})});}
+function panel(id,n,title,extra="",legend=""){return `<div class="p" id="${id}"><h3><span class="n">${n}</span>${title}${legend?`<small>${legend}</small>`:""}</h3>${extra}</div>`;}
+const lg=(c,t)=>`<span class="lg"><i style="background:${c}"></i>${t}</span>`;
+const cv=id=>`<div class="cv"><canvas id="${id}"></canvas></div>`;
+const note=t=>`<div class="note"><i class="fa-solid fa-circle-info"></i>${t}</div>`;
+const ins=items=>`<ul class="ins">${items.map(([c,i,t])=>`<li class="${c}"><i class="fa-solid ${i}"></i><span>${t}</span></li>`).join("")}</ul>`;
+const gridY={grid:{color:"#EEF1F4"},border:{display:false}}, noGridX={grid:{display:false},border:{color:"#E4E8EE"}};
+function hbar(id,labels,vals,colors,fmt,opts={}){return new Chart(document.getElementById(id),{type:"bar",data:{labels,datasets:[{pre:opts.pre||"",suf:opts.suf||"",data:vals,backgroundColor:colors,borderRadius:4,barPercentage:.72,categoryPercentage:.85}]},
+ options:{interaction:{mode:"index",intersect:false,axis:"y"},indexAxis:"y",layout:{padding:{right:opts.pad||70,top:opts.ref?14:0}},scales:{x:{display:false,min:opts.min,max:opts.max},y:{grid:{display:false},border:{display:false},ticks:{color:"#2B3040",font:{size:11.5}}}},
+ plugins:{datalabels:{display:true,anchor:"end",align:"end",color:"#16181D",font:{weight:600},formatter:fmt},ref:opts.ref||{}}}});}
+function donut(id,labels,vals,colors,center,sub,opts2={pre:"$"}){return new Chart(document.getElementById(id),{type:"doughnut",data:{labels,datasets:[{pre:opts2.pre||"",suf:opts2.suf||"",data:vals,backgroundColor:colors,borderWidth:3,borderColor:"#fff"}]},
+ options:{interaction:{mode:"nearest",intersect:true},cutout:"64%",layout:{padding:{right:6}},plugins:{legend:{display:true,position:"right",labels:{boxWidth:10,boxHeight:10,useBorderRadius:true,borderRadius:3,color:"#2B3040",font:{size:11.5},padding:9,
+ generateLabels:ch=>{const t=vals.reduce((a,b)=>a+b,0);return labels.map((l,i)=>({text:`${l}  ${(vals[i]/t*100).toFixed(1)}%`,fillStyle:colors[i],strokeStyle:colors[i],lineWidth:0,index:i}))}}},
+ datalabels:{display:false}},},plugins:[{id:"c",afterDraw(ch){const {ctx}=ch,m=ch.getDatasetMeta(0).data[0];if(!m)return;ctx.save();ctx.textAlign="center";ctx.fillStyle=C.navy;ctx.font="800 19px Inter";ctx.fillText(center,m.x,m.y+2);ctx.font="500 10.5px Inter";ctx.fillStyle="#6B7385";ctx.fillText(sub,m.x,m.y+18);ctx.restore();}}]});}
+const refLine={id:"ref",afterDatasetsDraw(ch,a,o){if(o.x==null)return;const {ctx,chartArea:ca,scales}=ch;const x=scales.x.getPixelForValue(o.x);ctx.save();ctx.strokeStyle=C.navy;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(x,ca.top);ctx.lineTo(x,ca.bottom);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=C.navy;ctx.font="600 10.5px Inter";ctx.textAlign="center";ctx.fillText(o.label,x,ca.top-3);ctx.restore();}};
+Chart.register(refLine);
+
+function toast(t){const e=document.getElementById("toast");e.innerHTML=t;e.classList.add("show");clearTimeout(window.__t);window.__t=setTimeout(()=>e.classList.remove("show"),2600);}
+document.addEventListener("click",e=>{if(e.target.closest(".sl div,.btn"))toast("<b>Web preview:</b> filters and export work in the Power BI version of this report.");});
+function fit(){const z=Math.min(1,window.innerWidth/1600);document.body.style.zoom=z;}
+
+document.querySelectorAll(".heat .c").forEach(()=>{});
+fetch("data.json").then(r=>r.json()).then(D=>{({sell,inv,fc,trade,sku,price})[page](D[page]);document.body.dataset.ready=1;});
+
+function sell(d){const k=d.kpi;
+ head("RETAIL","SELL-THROUGH","Latest 52 weeks vs. year ago · SPINS-style scan data across 6 retailers",[["Date range","fa-calendar","Latest 52 weeks"],["Retailer","fa-store","All retailers"],["Product line","fa-box","All lines"]]);
+ kpis([{icon:"fa-sack-dollar",label:"Retail $ sales",value:M(k.dollars),delta:`${arr(1)}${P(k.dollars_chg)}</span> <span class="neu">vs YA</span>`,spark:d.spark.dollars},
+  {icon:"fa-boxes-stacked",label:"Units sold",value:K(k.units),delta:`${arr(1)}${P(k.units_chg)}</span> <span class="neu">vs YA</span>`,spark:d.spark.units},
+  {icon:"fa-store",label:"Avg. item distribution",value:P(k.stores,0),delta:`${arr(1)}${k.stores_pts} pts</span> <span class="neu">vs YA</span>`,spark:d.spark.stores},
+  {icon:"fa-gauge-high",label:"Velocity $/store/SKU/wk",value:`$${k.spw.toFixed(2)}`,delta:`${arr(1)}${P(k.spw_chg)}</span> <span class="neu">vs YA</span>`,spark:d.spark.spw},
+  {icon:"fa-tags",label:"Avg. promo lift",value:SP(k.lift,0),delta:`${arr(1)}${((k.lift-k.lift_ya)*100).toFixed(1)} pts</span> <span class="neu">vs YA</span>`,spark:d.lift.map(x=>x.lift),sc:C.navy2}]);
+ grid.style.gridTemplateColumns="1.5fr 1.05fr .95fr";grid.style.gridTemplateRows="1fr 1fr";
+ grid.innerHTML=panel("a",1,"Weekly retail $ — this year vs. year ago",cv("c1")+note("Shaded area is the weekly gain over the same week last year."),lg(C.teal,"This year")+lg(C.gray,"Year ago"))
+  +panel("b",2,"Retail $ by retailer",cv("c2"),lg(C.teal,"Sales")+`<span class="lg">% = growth vs YA</span>`)
+  +panel("c",3,"Sales mix by product line",cv("c3"))
+  +panel("d",4,"Velocity by product line",cv("c4"),lg(C.navy,"This year")+lg(C.gray,"Year ago"))
+  +panel("e",5,"Promotion lift by retailer",`<table><tr><th>Retailer</th><th>On promo</th><th>Base vel.</th><th>Promo vel.</th><th style="width:36%">Lift</th></tr>${d.lift.map(r=>`<tr><td>${r.name}</td><td>${P(r.share,0)}</td><td>${r.base.toFixed(2)}</td><td>${r.promo.toFixed(2)}</td><td><span class="bar" style="width:${Math.round(r.lift/Math.max(...d.lift.map(x=>x.lift))*90)}px;background:${r.lift<.25?C.orange:C.teal}"></span><b style="color:${r.lift<.25?C.orange:C.teal}">${SP(r.lift,0)}</b></td></tr>`).join("")}</table>`+note("Velocity = units per store selling, per SKU, per week."))
+  +panel("f","<i class='fa-solid fa-lightbulb' style='font-size:10px'></i>","Key insights",ins([
+   ["","fa-arrow-up",`Retail sales grew <b>${P(k.dollars_chg)}</b> to <b>${M(k.dollars)}</b>.`],
+   ["","fa-store",`Average item distribution gained <b>${k.stores_pts} pts</b>, to ${P(k.stores,0)} of stores per item.`],
+   ["","fa-gauge-high",`Velocity rose <b>${P(k.spw_chg)}</b>, so growth is not only new stores.`],
+   ["o","fa-tags",`Promo lift is only <b>${SP(d.lift.find(x=>x.name=="Corner Convenience").lift,0)}</b> at Corner Convenience vs. <b>${SP(Math.max(...d.lift.map(x=>x.lift)),0)}</b> at Summit Grocery.`],
+   ["n","fa-arrow-right",`Shift promo weeks toward the retailers where lift is highest.`]]));
+ const ga=document.getElementById("c1").getContext("2d").createLinearGradient(0,0,0,260);ga.addColorStop(0,"rgba(0,147,147,.28)");ga.addColorStop(1,"rgba(0,147,147,0)");
+ new Chart(c1,{type:"line",data:{labels:d.weekly.labels,datasets:[{label:"This year",pre:"$",data:d.weekly.ty,borderColor:C.teal,borderWidth:2.6,pointRadius:0,tension:.35,fill:"+1",backgroundColor:"rgba(154,213,194,.38)"},{label:"Year ago",pre:"$",data:d.weekly.ya,borderColor:C.gray,borderWidth:2,pointRadius:0,tension:.35,borderDash:[5,4]}]},
+  options:{scales:{x:{...noGridX,ticks:{maxTicksLimit:7,maxRotation:0}},y:{...gridY,ticks:{callback:v=>`$${v/1e3}K`,maxTicksLimit:5}}}}});
+ hbar("c2",d.retailers.map(r=>r.name),d.retailers.map(r=>r.dollars),d.retailers.map((r,i)=>i<2?C.teal:C.mint),(v,c)=>`${M(v)}   ${SP(d.retailers[c.dataIndex].growth,0)}`,{pad:92,pre:"$"});
+ donut("c3",d.mix.map(x=>x.name),d.mix.map(x=>x.dollars),[C.navy,C.teal,C.mint],M(k.dollars),"Retail sales");
+ new Chart(c4,{type:"bar",data:{labels:d.lines.map(x=>x.name),datasets:[{label:"Year ago",pre:"$",data:d.lines.map(x=>x.ya),backgroundColor:C.gray,borderRadius:4},{label:"This year",pre:"$",data:d.lines.map(x=>x.ty),backgroundColor:C.navy,borderRadius:4}]},
+  options:{layout:{padding:{top:16}},scales:{x:noGridX,y:{...gridY,ticks:{callback:v=>`$${v}`,maxTicksLimit:5}}},plugins:{datalabels:{display:c=>c.datasetIndex==1,anchor:"end",align:"end",color:C.navy,font:{weight:700},formatter:v=>`$${v.toFixed(2)}`}}}});
+}
+
+function inv(d){const k=d.kpi;
+ head("INVENTORY &","WEEKS OF SUPPLY",`Distribution center positions · week ending ${d.week}`,[["Week","fa-calendar","Latest week"],["Distribution center","fa-warehouse","All DCs"],["Product line","fa-box","All lines"]]);
+ kpis([{icon:"fa-sack-dollar",label:"On hand at cost",value:M(k.val),delta:`<span class="neu">${k.positions} SKU-DC positions</span>`,spark:d.spark.val},
+  {icon:"fa-calendar-week",label:"Weeks of supply",value:k.wos.toFixed(1),delta:`<span class="up"><i class="fa-solid fa-circle-check"></i> Target 3–6 weeks</span>`,spark:d.spark.wos},
+  {icon:"fa-triangle-exclamation",cls:"bad",label:"Stockout risk",value:k.risk,delta:`<span class="dn">positions under 2 weeks</span>`,spark:d.spark.risk,sc:C.red},
+  {icon:"fa-layer-group",cls:"warn",label:"Overstocked",value:k.over,delta:`<span class="or">positions over 8 weeks</span>`,spark:d.spark.over,sc:C.orange},
+  {icon:"fa-hourglass-half",cls:"warn",label:"Best-by ≤ 60 days",value:M(k.exp),delta:`<span class="or">${k.exp_n} positions at cost</span>`,spark:d.spark.val.map((v,i)=>v*.13+(i%5)*300),sc:C.orange}]);
+ grid.style.gridTemplateColumns=".9fr 1.38fr .74fr";grid.style.gridTemplateRows="1fr 1fr";
+ const col=v=>v<2?[C.red,"#fff"]:v<3?["#F6C6C1","#7A2020"]:v<=6?["#CFEDE3","#0B5C55"]:v<=8?["#FBE0BD","#7A4A10"]:[C.orange,"#fff"];
+ const heat=`<div class="keys">${[[C.red,"< 2 risk"],["#F6C6C1","2–3 low"],["#CFEDE3","3–6 target"],["#FBE0BD","6–8 high"],[C.orange,"> 8 overstock"]].map(([c,t])=>`<span><i style="background:${c}"></i>${t}</span>`).join("")}</div>
+  <div class="heat" style="grid-template-columns:1.75fr repeat(3,1fr);grid-template-rows:16px repeat(${d.heat.products.length},1fr)"><div></div>${d.heat.dcs.map(x=>`<div class="h">${x}</div>`).join("")}
+  ${d.heat.products.map((p,i)=>`<div class="rl">${p}</div>`+d.heat.values[i].map(v=>{const [b,f]=col(v);return `<div class="c" style="background:${b};color:${f}">${v.toFixed(1)}</div>`}).join("")).join("")}</div>`;
+ grid.innerHTML=`<div class="p" style="grid-row:1/3"><h3><span class="n">1</span>Weeks of supply by product &amp; DC</h3>${heat}</div>`
+  +panel("b",2,"On hand vs. weeks of supply",cv("c2"),lg(C.mint,"On hand")+lg(C.navy,"WOS")+lg("#D8F0EA","3–6 wk target"))
+  +panel("c",3,"Inventory $ by DC",cv("c3"))
+  +panel("d",4,"Action list",`<table><tr><th>Product</th><th>DC</th><th>On hand</th><th>WOS</th><th>Status</th><th>Suggested action</th></tr>${d.actions.slice(0,7).map(r=>`<tr><td>${r.product}</td><td>${r.dc}</td><td>${r.oh.toLocaleString()}</td><td><b>${r.wos.toFixed(1)}</b></td><td><span class="pill ${r.status=="Overstock"?"o":"r"}">${r.status}</span></td><td>${r.action.replace("Expedite PO / transfer","Expedite / transfer").replace("Promote or transfer","Promote / transfer")}</td></tr>`).join("")}</table>`)
+  +panel("e","<i class='fa-solid fa-lightbulb' style='font-size:10px'></i>","Key insights",ins([
+   ["","fa-circle-check",`The network holds <b>${k.wos} weeks</b> of supply, inside the 3–6 week target.`],
+   ["r","fa-triangle-exclamation",`<b>${k.risk} of ${k.positions}</b> positions are under 2 weeks, including 3 tortilla chip items in Salt Lake City.`],
+   ["o","fa-layer-group",(()=>{const o=d.actions.filter(x=>x.status=="Overstock").sort((x,y)=>y.wos-x.wos)[0];return `<b>${k.over}</b> positions are overstocked, led by ${o.product} in ${o.dc} (${o.wos} weeks).`})()],
+   ["o","fa-hourglass-half",`<b>${M(k.exp)}</b> of stock has a best-by date within 60 days.`],
+   ["n","fa-arrow-right",`Transfer Lime and Blue Corn tortilla chips from Boise to Salt Lake City before the next PO.`]]));
+ new Chart(c2,{data:{labels:d.trend.labels,datasets:[{type:"line",label:"Weeks of supply",data:d.trend.wos,yAxisID:"y2",borderColor:C.navy,borderWidth:2.4,pointRadius:2.5,pointBackgroundColor:C.navy,tension:.25},{type:"bar",label:"On hand (units)",data:d.trend.oh,backgroundColor:C.mint,borderRadius:3,barPercentage:.8}]},
+  options:{scales:{x:{...noGridX,ticks:{maxTicksLimit:7,maxRotation:0}},y:{...gridY,ticks:{callback:v=>`${v/1e3}K`,maxTicksLimit:5}},y2:{position:"right",min:0,max:10,grid:{display:false},border:{display:false},ticks:{maxTicksLimit:6}}}},
+  plugins:[{id:"band",beforeDatasetsDraw(ch){const {ctx,chartArea:a,scales}=ch;const y1=scales.y2.getPixelForValue(6),y0=scales.y2.getPixelForValue(3);ctx.save();ctx.fillStyle="rgba(0,147,147,.08)";ctx.fillRect(a.left,y1,a.right-a.left,y0-y1);ctx.restore();}}]});
+ donut("c3",d.dc.map(x=>x.name),d.dc.map(x=>x.val),[C.navy,C.teal,C.mint],M(k.val),"On hand at cost");
+}
+
+function fc(d){const k=d.kpi;
+ head("FORECAST","ACCURACY & S&OP","Monthly SKU forecast vs. actual shipments · latest 12 months",[["Date range","fa-calendar","Latest 12 months"],["Product line","fa-box","All lines"],["Forecast version","fa-clock-rotate-left","Final monthly"]]);
+ kpis([{icon:"fa-bullseye",label:"Forecast accuracy",value:P(k.acc,1),delta:`${arr(k.acc_pts,false)}${Math.abs(k.acc_pts)} pts</span> <span class="neu">vs prior period</span>`,spark:d.spark.acc},
+  {icon:"fa-percent",label:"WMAPE",value:P(k.wmape,1),delta:`<span class="neu">Weighted abs. % error</span>`,spark:d.spark.wmape,sc:C.navy2},
+  {icon:"fa-scale-unbalanced",label:"Forecast bias",value:SP(k.bias,1),delta:`<span class="up"><i class="fa-solid fa-circle-check"></i> Within ±3%</span>`,spark:d.spark.bias},
+  {icon:"fa-triangle-exclamation",cls:"bad",label:"SKUs below 80%",value:`${k.below} of 12`,delta:`<span class="dn">focus list for S&OP</span>`,spark:d.skus.map(x=>x.acc),sc:C.red},
+  {icon:"fa-boxes-stacked",label:"Abs. error (units)",value:K(k.err),delta:`<span class="neu">latest 12 months</span>`,spark:d.spark.err,sc:C.navy2}]);
+ grid.style.gridTemplateColumns="1.32fr .83fr .9fr";grid.style.gridTemplateRows="1fr 1fr";
+ grid.innerHTML=panel("a",1,"Forecast vs. actual units by month",cv("c1"),lg(C.mint,"Actual")+lg(C.navy,"Forecast"))
+  +panel("b",2,"Accuracy score",cv("c2")+note("Target: 80% or higher at SKU level."))
+  +panel("c",3,"Bias by product line",cv("c3")+note("Positive = over-forecast; negative = under-forecast."))
+  +panel("e",4,"Biggest error drivers",`<table><tr><th>Product</th><th>Accuracy</th><th>Bias</th><th>Abs. error</th><th>S&amp;OP note</th></tr>${d.drivers.map(r=>`<tr><td>${r.name}</td><td><span class="pill ${r.acc<.8?"r":"g"}">${P(r.acc,0)}</span></td><td>${SP(r.bias)}</td><td>${r.err.toLocaleString()}</td><td>${r.note}</td></tr>`).join("")}</table>`+note("Absolute error = sum of |forecast – actual| by SKU and month."))
+  +panel("d",5,"Accuracy by SKU",cv("c4"))
+  +panel("f","<i class='fa-solid fa-lightbulb' style='font-size:10px'></i>","Key insights",ins([
+   ["","fa-bullseye",`Accuracy is <b>${P(k.acc,0)}</b> with overall bias of only <b>${SP(k.bias)}</b>.`],
+   ["r","fa-arrow-down",`Accuracy slipped <b>${Math.abs(k.acc_pts)} pts</b> vs. the prior period.`],
+   ["o","fa-scale-unbalanced",`Popcorn is over-forecast by <b>${SP(d.lines[0].bias)}</b>; tortilla chips are under by <b>${SP(d.lines[2].bias)}</b>.`],
+   ["r","fa-triangle-exclamation",`<b>${k.below} SKUs</b> are below 80%; Popcorn Kettle is the biggest source of error.`],
+   ["n","fa-arrow-right",`Lower the popcorn baseline at the next S&amp;OP meeting.`]]));
+ new Chart(c1,{data:{labels:d.monthly.labels,datasets:[{type:"line",label:"Forecast",suf:" units",data:d.monthly.fcst,borderColor:C.navy,borderWidth:2.4,pointRadius:3,pointBackgroundColor:C.navy,tension:.25},{type:"bar",label:"Actual",suf:" units",data:d.monthly.act,backgroundColor:C.mint,borderRadius:4,barPercentage:.7}]},
+  options:{scales:{x:{...noGridX,ticks:{maxRotation:0,font:{size:10}}},y:{...gridY,ticks:{callback:v=>`${v/1e3}K`,maxTicksLimit:5}}}}});
+ new Chart(c2,{type:"doughnut",data:{datasets:[{data:[k.acc,1-k.acc],backgroundColor:[C.teal,"#E9EDF1"],borderWidth:0}]},options:{plugins:{tooltip:{enabled:false}},rotation:-90,circumference:180,cutout:"72%",layout:{padding:{bottom:0}}},
+  plugins:[{id:"g",afterDraw(ch){const m=ch.getDatasetMeta(0).data[0],x=ch.ctx;x.save();x.textAlign="center";x.fillStyle=C.navy;x.font="800 30px Inter";x.fillText(P(k.acc,1),m.x,m.y-8);x.font="600 12px Inter";x.fillStyle=C.teal;x.fillText("Good",m.x,m.y+12);x.fillStyle="#6B7385";x.font="500 10px Inter";x.fillText("0%",m.x-m.outerRadius+14,m.y+14);x.fillText("100%",m.x+m.outerRadius-16,m.y+14);x.restore();}}]});
+ new Chart(c3,{type:"bar",data:{labels:d.lines.map(x=>x.name),datasets:[{label:"Bias",suf:"%",data:d.lines.map(x=>x.bias*100),backgroundColor:d.lines.map(x=>x.bias>.03?C.orange:x.bias<-.03?C.red:C.teal),borderRadius:4,barPercentage:.6}]},
+  options:{indexAxis:"y",layout:{padding:{left:6,right:44}},scales:{x:{min:-16,max:16,grid:{color:c=>c.tick.value==0?"#16181D":"#EEF1F4"},border:{display:false},ticks:{callback:v=>`${v>0?"+":""}${v}%`,maxTicksLimit:5}},y:{grid:{display:false},border:{display:false},ticks:{color:"#2B3040",font:{size:11.5}}}},
+  plugins:{datalabels:{display:true,anchor:c=>c.dataset.data[c.dataIndex]>=0?"end":"start",align:c=>c.dataset.data[c.dataIndex]>=0?"end":"start",font:{weight:700},color:"#16181D",formatter:v=>`${v>0?"+":""}${v.toFixed(1)}%`}}}});
+ hbar("c4",d.skus.map(x=>x.name.replace(" Chips","")),d.skus.map(x=>x.acc*100),d.skus.map(x=>x.acc<.8?C.red:C.teal),v=>`${v.toFixed(0)}%`,{suf:"%",min:50,max:100,pad:30,ref:{x:80,label:"Target 80%"}});
+}
+
+function trade(d){const k=d.kpi;
+ head("TRADE SPEND","& MARGIN","Gross-to-net and profitability by customer · latest 12 months",[["Date range","fa-calendar","Nov 2025 – Oct 2026"],["Customer","fa-store","All customers"],["Product line","fa-box","All lines"]]);
+ kpis([{icon:"fa-file-invoice-dollar",label:"Gross sales",value:M(k.gross),delta:`<span class="neu">invoiced at wholesale</span>`,spark:d.spark.gross},
+  {icon:"fa-tags",cls:"warn",label:"Trade spend",value:M(k.trade),delta:`<span class="or">${P(k.trade_pct)} of gross</span>`,spark:d.spark.trade,sc:C.orange},
+  {icon:"fa-sack-dollar",label:"Net sales",value:M(k.net),delta:`<span class="neu">after all trade</span>`,spark:d.spark.net},
+  {icon:"fa-chart-pie",label:"Gross margin",value:P(k.gm),delta:`<span class="up">Gross profit ${M(k.gp)}</span>`,spark:d.spark.gm},
+  {icon:"fa-percent",cls:"warn",label:"Trade % of gross",value:P(k.trade_pct),delta:`<span class="neu">monthly trend</span>`,spark:d.spark.pct,sc:C.orange}]);
+ grid.style.gridTemplateColumns="1.5fr .82fr 1fr";grid.style.gridTemplateRows="1fr 1fr";
+ const roiMax=Math.max(...d.customers.map(c=>c.roi));
+ grid.innerHTML=panel("a",1,"Gross-to-net waterfall",cv("c1"),lg(C.navy,"Totals")+lg(C.orange,"Trade")+lg(C.gray,"COGS"))
+  +panel("b",2,"Trade spend mix",cv("c2"))
+  +panel("c",3,"Trade % of gross by customer",cv("c3"),`<span class="lg">dashed = average</span>`)
+  +`<div class="p" style="grid-column:1/3"><h3><span class="n">4</span>Customer P&amp;L and promotion ROI</h3><table><tr><th>Customer</th><th>Gross</th><th>Trade</th><th>Trade %</th><th>Net</th><th>GM %</th><th>Promo ROI</th></tr>${d.customers.map(r=>`<tr><td>${r.name}</td><td>${M(r.gross)}</td><td>${M(r.trade)}</td><td>${P(r.pct)}</td><td>${M(r.net)}</td><td>${P(r.gm)}</td><td><span class="pill ${r.roi<0?"r":"g"}">${SP(r.roi,0)}</span></td></tr>`).join("")}</table>`
+  +note("Promo ROI = (incremental gross profit from promoted units – scan-down spend) / scan-down spend.")+`</div>`
+  +panel("e","<i class='fa-solid fa-lightbulb' style='font-size:10px'></i>","Key insights",ins([
+   ["o","fa-tags",`Trade spend is <b>${P(k.trade_pct)}</b> of gross; off-invoice is <b>${P(d.mix[0].val/k.trade,0)}</b> of it.`],
+   ["","fa-chart-pie",`Gross margin is <b>${P(k.gm)}</b> after trade and COGS.`],
+   ["r","fa-arrow-down",`Promotions lose money at Corner Convenience (<b>${SP(d.customers.find(c=>c.name=="Corner Convenience").roi,0)}</b>) and Mountain Market (<b>${SP(d.customers.find(c=>c.name=="Mountain Market").roi,0)}</b>).`],
+   ["","fa-arrow-up",`Summit Grocery returns <b>${SP(d.customers.find(c=>c.name=="Summit Grocery").roi,0)}</b> on promo spend.`],
+   ["n","fa-arrow-right",`Move scan-down dollars toward customers with positive ROI.`]]));
+ let run=0;const lab=[],data=[],col=[];
+ d.waterfall.forEach(([l,v])=>{lab.push(l);if(["Gross sales","Net sales","Gross profit"].includes(l)){data.push([0,v]);run=v;col.push(l=="Net sales"?C.teal:C.navy)}else{data.push([run+v,run]);run+=v;col.push(l=="COGS"?C.gray:C.orange)}});
+ new Chart(c1,{type:"bar",data:{labels:lab,datasets:[{pre:"$",data,backgroundColor:col,borderRadius:4,barPercentage:.68}]},options:{layout:{padding:{top:18}},scales:{x:{...noGridX,ticks:{maxRotation:0,autoSkip:false,font:{size:10.5}}},y:{...gridY,ticks:{callback:v=>v>=1e6?`$${v/1e6}M`:`$${v/1e3}K`,maxTicksLimit:5}}},
+  plugins:{datalabels:{display:true,anchor:"end",align:"end",color:"#16181D",font:{weight:700},formatter:(v,c)=>M(Math.abs(d.waterfall[c.dataIndex][1]))}}}});
+ donut("c2",d.mix.map(x=>x.name),d.mix.map(x=>x.val),[C.orange,"#F3B76B",C.navy,C.gray],M(k.trade),"Trade spend");
+ const cs=[...d.customers].sort((a,b)=>b.pct-a.pct);
+ hbar("c3",cs.map(x=>x.name),cs.map(x=>x.pct*100),cs.map(x=>x.pct>k.trade_pct?C.orange:C.teal),v=>`${v.toFixed(1)}%`,{suf:"%",min:0,max:16,pad:40,ref:{x:k.trade_pct*100,label:`Avg ${P(k.trade_pct)}`}});
+}
+
+function sku(d){const k=d.kpi;const short=n=>n.replace("Tortilla Chips","Tortilla").replace("Kettle Chips","Kettle").replace("Popcorn","Popcorn");
+ const LC={"Kettle Chips":C.navy,"Tortilla Chips":C.teal,"Popcorn":C.orange};
+ head("SKU","PROFITABILITY","Contribution margin by SKU after trade, COGS and freight · latest 12 months",[["Date range","fa-calendar","Nov 2025 – Oct 2026"],["Customer","fa-store","All customers"],["Product line","fa-box","All lines"]]);
+ kpis([{icon:"fa-sack-dollar",label:"Net sales",value:M(k.net),delta:`<span class="neu">after trade spend</span>`,spark:d.spark.net},
+  {icon:"fa-coins",label:"Contribution margin",value:M(k.cm),delta:`<span class="up">top 3 SKUs = ${P(k.top3,0)}</span>`,spark:d.spark.cm},
+  {icon:"fa-percent",label:"CM % of net",value:P(k.cmpct),delta:`<span class="neu">after COGS + freight</span>`,spark:d.spark.cmpct},
+  {icon:"fa-box-open",label:"CM per unit",value:`$${k.cmunit.toFixed(2)}`,delta:`<span class="neu">average across SKUs</span>`,spark:d.spark.cmunit,sc:C.navy2},
+  {icon:"fa-triangle-exclamation",cls:"bad",label:"SKUs below 25% CM",value:`${k.low} of ${k.n}`,delta:`<span class="dn">price or cost review</span>`,spark:d.skus.map(x=>x.cmpct).reverse(),sc:C.red}]);
+ grid.style.gridTemplateColumns="1.25fr 1fr .88fr";grid.style.gridTemplateRows="1fr 1.1fr";
+ const pill={"Grow":"g","Build distribution":"g","Fix price / cost":"o","Review":"r"};
+ grid.innerHTML=panel("a",1,"Profit quadrant",cv("c1"),Object.entries(LC).map(([n,c])=>lg(c,n.replace(" Chips",""))).join("")+`<span class="lg">bubble = net sales</span>`)
+  +panel("b",2,"CM by SKU (Pareto)",cv("c2"),lg(C.teal,"CM $")+lg(C.red,"< 25% CM")+lg(C.navy,"Cum. %"))
+  +panel("c",3,"Unit economics per unit sold",cv("c3")+note(d.unit.map(u=>`${u.line.replace(" Chips","")}: freight $${u.freight.toFixed(2)}, trade $${u.trade.toFixed(2)}`).join(" · ")))
+  +`<div class="p" style="grid-column:1/3"><h3><span class="n">4</span>SKU P&amp;L ranked by contribution</h3><table class="tight"><tr><th>SKU</th><th>Product</th><th>Units</th><th>Net sales</th><th>Trade %</th><th>CM $</th><th>CM %</th><th>CM / unit</th><th>Velocity</th><th>Action</th></tr>
+   ${d.skus.map(r=>`<tr><td style="color:#6B7385">${r.sku}</td><td>${r.name}</td><td>${r.units.toLocaleString()}</td><td>${M(r.net)}</td><td>${P(r.trade_pct)}</td><td><b>${M(r.cm)}</b></td><td style="color:${r.cmpct<.25?C.red:"inherit"};font-weight:${r.cmpct<.25?700:400}">${P(r.cmpct)}</td><td>$${r.cmunit.toFixed(2)}</td><td>${r.vel.toFixed(2)}</td><td><span class="pill ${pill[r.action]}">${r.action}</span></td></tr>`).join("")}</table></div>`
+  +panel("e","<i class='fa-solid fa-lightbulb' style='font-size:10px'></i>","Key insights",ins((()=>{const s=d.skus,jal=s.find(x=>x.name=="Kettle Chips Jalapeño"),top=s[0],pop=d.unit.find(u=>u.line=="Popcorn");return [
+   ["","fa-coins",`Contribution margin is <b>${M(k.cm)}</b>, or <b>${P(k.cmpct)}</b> of net sales.`],
+   ["","fa-trophy",`<b>${top.name}</b> earns the most: <b>${M(top.cm)}</b> at ${P(top.cmpct,0)} CM.`],
+   ["r","fa-triangle-exclamation",`<b>Kettle Chips Jalapeño</b> sells fast but has the lowest margin (<b>${P(jal.cmpct)}</b>).`],
+   ["o","fa-truck",`Popcorn carries the highest freight ($${pop.freight.toFixed(2)}/unit) and still earns the most per unit ($${pop.cm.toFixed(2)}).`],
+   ["n","fa-arrow-right",`Review price and seasoning cost on the ${k.low} SKUs below 25% CM before the next line review.`]]})()));
+ // 1. bubble quadrant
+ new Chart(c1,{type:"bubble",options0:0,data:{datasets:Object.keys(LC).map(l=>({data:d.skus.filter(x=>x.line==l).map(x=>({x:x.vel,y:x.cmpct*100,r:4+Math.sqrt(x.net)/70,n:short(x.name)})),backgroundColor:LC[l]+"CC",borderColor:"#fff",borderWidth:1.5}))},
+  options:{interaction:{mode:"nearest",intersect:true},layout:{padding:{top:6,right:10}},scales:{x:{...gridY,min:1.6,max:5.4,title:{display:true,text:"Velocity (units / store / SKU / week)",font:{size:10.5}}},y:{...gridY,min:14,max:46,ticks:{callback:v=>v+"%",maxTicksLimit:6},title:{display:true,text:"CM % of net sales",font:{size:10.5}}}},
+  plugins:{datalabels:{display:true,align:c=>({"Popcorn Sea Salt":"left","Tortilla Lime":"top","Kettle Sea Salt":"top","Popcorn Kettle":"right","Popcorn Butter":"right","Tortilla Chipotle":"top","Kettle BBQ":"bottom","Tortilla Blue Corn":"right","Kettle Jalapeño":"right","Tortilla Classic":"right","Kettle Salt & Vinegar":"left","Popcorn White Cheddar":"top"})[c.dataset.data[c.dataIndex].n]||"top",offset:c=>c.dataset.data[c.dataIndex].r*0.9,font:{size:9.5,weight:600},color:"#2B3040",formatter:(v)=>v.n},quad:{vx:d.medians.vel,vy:d.medians.cm*100}}},
+  plugins:[{id:"quad",beforeDatasetsDraw(ch,a,o){const {ctx,chartArea:ca,scales:{x,y}}=ch;const px=x.getPixelForValue(o.vx),py=y.getPixelForValue(o.vy);ctx.save();
+   ctx.fillStyle="rgba(0,147,147,.06)";ctx.fillRect(px,ca.top,ca.right-px,py-ca.top);ctx.fillStyle="rgba(214,69,69,.05)";ctx.fillRect(ca.left,py,px-ca.left,ca.bottom-py);
+   ctx.strokeStyle="#9AA3B5";ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(px,ca.top);ctx.lineTo(px,ca.bottom);ctx.moveTo(ca.left,py);ctx.lineTo(ca.right,py);ctx.stroke();ctx.setLineDash([]);
+   ctx.font="700 10px Inter";ctx.fillStyle=C.teal;ctx.textAlign="right";ctx.fillText("GROW",ca.right-6,ca.top+13);ctx.textAlign="left";ctx.fillStyle="#5B6BB5";ctx.fillText("BUILD DISTRIBUTION",ca.left+6,ca.top+13);
+   ctx.fillStyle=C.red;ctx.fillText("REVIEW",ca.left+6,ca.bottom-7);ctx.textAlign="right";ctx.fillStyle=C.orange;ctx.fillText("FIX PRICE / COST",ca.right-6,ca.bottom-7);ctx.restore();}}]});
+ // 2. pareto
+ let cum=0;const cumv=d.skus.map(x=>(cum+=x.cm)/k.cm*100);
+ new Chart(c2,{data:{labels:d.skus.map(x=>short(x.name)),datasets:[{type:"line",label:"Cumulative",suf:"%",data:cumv,yAxisID:"y2",borderColor:C.navy,borderWidth:2.2,pointRadius:2.5,pointBackgroundColor:C.navy,tension:.2},{type:"bar",label:"Contribution",pre:"$",data:d.skus.map(x=>x.cm),backgroundColor:d.skus.map(x=>x.cmpct<.25?C.red:C.teal),borderRadius:3,barPercentage:.75}]},
+  options:{scales:{x:{...noGridX,ticks:{maxRotation:45,minRotation:45,autoSkip:false,font:{size:9.5}}},y:{...gridY,ticks:{callback:v=>`$${v/1e3}K`,maxTicksLimit:5}},y2:{position:"right",min:0,max:100,grid:{display:false},border:{display:false},ticks:{callback:v=>v+"%",maxTicksLimit:5}}}}});
+ // 3. unit economics stacked
+ const parts=[["COGS","cogs",C.gray],["Freight","freight","#5B6BB5"],["Trade","trade",C.orange],["Contribution","cm",C.teal]];
+ new Chart(c3,{type:"bar",data:{labels:d.unit.map(u=>u.line.replace(" Chips","")),datasets:parts.map(([n,f,c])=>({label:n,pre:"$",data:d.unit.map(u=>u[f]),backgroundColor:c,barPercentage:.62}))},
+  options:{indexAxis:"y",layout:{padding:{right:4}},scales:{x:{stacked:true,display:false},y:{stacked:true,grid:{display:false},border:{display:false},ticks:{color:"#2B3040",font:{size:11.5}}}},
+  plugins:{legend:{display:true,position:"bottom",labels:{boxWidth:10,boxHeight:10,useBorderRadius:true,borderRadius:3,font:{size:10.5},padding:8}},datalabels:{display:c=>[0,3].includes(c.datasetIndex),color:c=>c.datasetIndex==0?"#16181D":"#fff",font:{weight:700,size:10.5},formatter:v=>`$${v.toFixed(2)}`}}}});
+}
+
+function price(d){const k=d.kpi;const el=d.resp.elasticity;
+ head("PRICING","& PROFITABILITY","Price-volume-mix, price position vs. competitors and the March 2026 price increase",[["Date range","fa-calendar","Latest 52 weeks"],["Retailer","fa-store","All retailers"],["Product line","fa-box","All lines"]]);
+ kpis([{icon:"fa-tag",label:"Avg. shelf price / unit",value:`$${k.shelf.toFixed(2)}`,delta:`${arr(1)}${P(k.shelf_chg)}</span> <span class="neu">vs YA</span>`,spark:d.spark.shelf},
+  {icon:"fa-hand-holding-dollar",label:"Net price / unit (brand)",value:`$${k.net.toFixed(2)}`,delta:`${arr(1)}${P(k.net_chg)}</span> <span class="neu">after trade</span>`,spark:d.spark.net},
+  {icon:"fa-sack-dollar",label:"Price effect on sales",value:`+${M(k.price_eff)}`,delta:`<span class="neu">of +${M(k.rev_chg)} total growth</span>`,spark:d.spark.shelf,sc:C.navy2},
+  {icon:"fa-scale-balanced",label:"Price index vs. competitors",value:k.index.toFixed(0),delta:`<span class="neu">100 = competitor parity</span>`,spark:d.spark.index},
+  {icon:"fa-arrow-trend-down",cls:"warn",label:"Measured elasticity",value:el["Kettle Chips"].toFixed(1),delta:`<span class="or">Kettle Chips; Popcorn ${el["Popcorn"].toFixed(1)}</span>`,spark:d.resp.series["Kettle Chips (+6%)"],sc:C.orange}]);
+ grid.style.gridTemplateColumns="1.25fr 1.15fr .85fr";grid.style.gridTemplateRows="1fr 1fr";
+ const LC=[C.navy,C.orange,C.teal];
+ grid.innerHTML=panel("a",1,"Price-volume-mix bridge",cv("c1"),lg(C.navy,"Totals")+lg(C.teal,"Increase")+lg(C.red,"Decrease"))
+  +panel("b",2,"Volume response to the March 1 price increase",cv("c2")+note("Base velocity (non-promo), indexed to the 12 weeks before = 100. Tortilla Chips had no increase and act as the control."))
+  +panel("c",3,"Price index",cv("c3"),lg(C.gray,"Year ago")+lg(C.teal,"This year"))
+  +panel("d",4,"Price realization by retailer",`<table><tr><th>Retailer</th><th>Avg. shelf price</th><th>Realization</th><th>Net price / unit</th><th>CM / unit</th></tr>${d.retailers.map(r=>`<tr><td>${r.name}</td><td>$${r.shelf.toFixed(2)}</td><td>${P(r.real)}</td><td><b>$${r.net.toFixed(2)}</b></td><td><span class="pill ${r.cmu<.72?"o":"g"}">$${r.cmu.toFixed(2)}</span></td></tr>`).join("")}</table>`+note("Realization = actual shelf $ / (units × list price). Net price is what the brand keeps after all trade spend."))
+  +panel("e",5,"CM per unit, before vs. after",cv("c5"),lg(C.gray,"Prior 12 mo")+lg(C.navy,"Latest 12 mo"))
+  +panel("f","<i class='fa-solid fa-lightbulb' style='font-size:10px'></i>","Key insights",ins((()=>{const t=d.index.find(x=>x.name=="Tortilla Chips"),kc=d.netline.find(x=>x.name=="Kettle Chips");return [
+   ["","fa-sack-dollar",`Price added <b>+${M(k.price_eff)}</b>; most of the <b>+${M(k.rev_chg)}</b> growth came from volume.`],
+   ["","fa-arrow-up",`Kettle Chips contribution rose from <b>$${kc.cm_ya.toFixed(2)}</b> to <b>$${kc.cm_ty.toFixed(2)}</b> per unit after the increase.`],
+   ["o","fa-arrow-trend-down",`Volume held up: measured elasticity is <b>${el["Kettle Chips"].toFixed(1)}</b> for Kettle and <b>${el["Popcorn"].toFixed(1)}</b> for Popcorn.`],
+   ["r","fa-scale-balanced",`Tortilla Chips now sit <b>${(100-t.ty).toFixed(0)}% below</b> competitors (index ${t.ty.toFixed(0)}) after competitors raised prices.`],
+   ["n","fa-arrow-right",`Test a 3–4% Tortilla Chips increase at one retailer before rolling it out.`]]})()));
+ // 1. PVM waterfall
+ let run=0;const lab=[],data=[],col=[];
+ d.pvm.forEach(([l,v],i)=>{lab.push(l);if(i==0||i==d.pvm.length-1){data.push([0,v]);run=v;col.push(C.navy)}else{data.push(v>=0?[run,run+v]:[run+v,run]);run+=v;col.push(v>=0?C.teal:C.red)}});
+ new Chart(c1,{type:"bar",data:{labels:lab,datasets:[{pre:"$",data,backgroundColor:col,borderRadius:4,barPercentage:.62}]},options:{layout:{padding:{top:18}},
+  scales:{x:{...noGridX,ticks:{maxRotation:0,autoSkip:false,font:{size:10.5}}},y:{...gridY,min:2.6e6,ticks:{callback:v=>`$${(v/1e6).toFixed(1)}M`,maxTicksLimit:5}}},
+  plugins:{datalabels:{display:true,anchor:"end",align:"end",color:"#16181D",font:{weight:700},formatter:(v,c)=>{const x=d.pvm[c.dataIndex][1];return (c.dataIndex==0||c.dataIndex==d.pvm.length-1)?M(x):`${x>=0?"+":"–"}${M(Math.abs(x))}`}}}}});
+ // 2. volume response
+ const names=Object.keys(d.resp.series);
+ new Chart(c2,{type:"line",data:{labels:d.resp.labels,datasets:names.map((n,i)=>({label:n,suf:" (index)",data:d.resp.series[n],borderColor:LC[i],borderWidth:i==2?2:2.4,borderDash:i==2?[5,4]:[],pointRadius:0,tension:.3}))},
+  options:{layout:{padding:{top:14}},plugins:{legend:{display:true,position:"top",align:"end",labels:{boxWidth:10,boxHeight:3,font:{size:10.5},padding:8}}},
+  scales:{x:{...noGridX,ticks:{maxTicksLimit:6,maxRotation:0}},y:{...gridY,ticks:{maxTicksLimit:5}}}},
+  plugins:[{id:"mk",afterDatasetsDraw(ch){const {ctx,chartArea:a,scales:{x}}=ch;const px=x.getPixelForValue(12)-(x.getPixelForValue(1)-x.getPixelForValue(0))/2;ctx.save();ctx.strokeStyle=C.navy;ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(px,a.top);ctx.lineTo(px,a.bottom);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=C.navy;ctx.font="700 10px Inter";ctx.textAlign="left";ctx.fillText("Price increase",px+4,a.bottom-6);ctx.restore();}}]});
+ // 3. price index
+ new Chart(c3,{type:"bar",data:{labels:d.index.map(x=>x.name.replace(" Chips","")),datasets:[{label:"Year ago",data:d.index.map(x=>x.ya),backgroundColor:C.gray,borderRadius:4},{label:"This year",data:d.index.map(x=>x.ty),backgroundColor:d.index.map(x=>x.ty<95?C.orange:C.teal),borderRadius:4}]},
+  options:{layout:{padding:{top:16}},scales:{x:noGridX,y:{...gridY,min:85,max:106,ticks:{maxTicksLimit:5}}},plugins:{datalabels:{display:c=>c.datasetIndex==1,anchor:"end",align:"end",font:{weight:700},color:"#16181D",formatter:v=>v.toFixed(0)}}},
+  plugins:[{id:"par",afterDatasetsDraw(ch){const {ctx,chartArea:a,scales:{y}}=ch;const py=y.getPixelForValue(100);ctx.save();ctx.strokeStyle=C.navy;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(a.left,py);ctx.lineTo(a.right,py);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=C.navy;ctx.font="600 10px Inter";ctx.textAlign="left";ctx.fillText("Competitor parity = 100",a.left+2,py-4);ctx.restore();}}]});
+ // 5. contribution per unit
+ new Chart(c5,{type:"bar",data:{labels:d.netline.map(x=>x.name.replace(" Chips","")),datasets:[{label:"Prior 12 months",pre:"$",data:d.netline.map(x=>x.cm_ya),backgroundColor:C.gray,borderRadius:4},{label:"Latest 12 months",pre:"$",data:d.netline.map(x=>x.cm_ty),backgroundColor:C.navy,borderRadius:4}]},
+  options:{layout:{padding:{top:16}},scales:{x:noGridX,y:{...gridY,min:0,ticks:{callback:v=>`$${v.toFixed(2)}`,maxTicksLimit:5}}},
+  plugins:{datalabels:{display:true,anchor:"end",align:"end",font:{weight:700,size:10.5},color:c=>c.datasetIndex?C.navy:"#6B7385",formatter:v=>`$${v.toFixed(2)}`}}}});
+}
+</script></body></html>

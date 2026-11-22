@@ -42,15 +42,17 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px soli
   <figure><a href="../images/samples/trade-spend-margin.png"><img src="../images/samples/trade-spend-margin.png" alt="Trade Spend & Margin Dashboard preview for the fictional brand Saltbrush Snack Co." width="2400" height="1350"></a>
   <figcaption>Dashboard preview. Click to open full size.</figcaption></figure>
   <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Gross-to-net</span><span class="tag">Trade promotion</span><span class="tag">Customer P&L</span></div>
+  <div class="btns"><a class="btn primary" href="../demo/?p=trade">Open this report in the live demo</a><a class="btn" href="../index.html#walkthrough">Watch the walkthrough</a></div>
 </header>
 <section><div class="grid">
   <div class="box"><h3>What the report answers</h3><ul><li>A gross-to-net waterfall: off-invoice, scan-downs, slotting, spoilage and COGS</li><li>Trade spend as a % of gross by customer, against the average</li><li>Gross margin % by customer</li><li>A customer P&amp;L with promotion ROI</li></ul></div>
-  <div class="box"><h3>What the sample data shows</h3><p>Trade spend is 10.6% of gross sales and gross margin is 40.2%. Corner Convenience and Mountain Market spend the most on trade, and their promotions lose money (–48% and –30% ROI), while Summit Grocery&#x27;s promotions return +25%. That points to moving promo dollars rather than cutting them.</p></div>
+  <div class="box"><h3>What the sample data shows</h3><p>Trade spend is 10.5% of gross sales and gross margin is 40.1%. Corner Convenience and Mountain Market spend the most on trade, and their promotions lose money (−49% and −30% ROI), while Summit Grocery&#x27;s promotions return +25%. That points to moving promo dollars rather than cutting them.</p></div>
 </div></section>
 <section><h2>Data model</h2>
   <p class="lead" style="font-size:16px">A star schema: one fact table with the numbers, and dimension tables for filtering. Relationships are one-to-many from each dimension to the fact table on its ID or key column.</p>
   <table><tr><th>Table</th><th>Contents</th></tr><tr><td><code>fact_trade_pnl</code></td><td>Month × customer: units, gross sales, off-invoice, scan-down spend, slotting, spoilage, COGS, incremental promo units</td></tr><tr><td><code>dim_retailer</code></td><td>Customer, channel, total stores</td></tr></table>
 </section>
+<section><h2>Definitions &amp; caveats</h2><div class="box"><ul><li>Period: latest 12 complete months (Nov 2025 – Oct 2026).</li><li>Gross sales are invoiced at wholesale (62% of shelf price in this sample). Scan-downs are the brand-funded share of shelf discounts.</li><li>Gross margin here is after trade and COGS, before freight. Freight is included in the SKU profitability model.</li><li>Incremental promo units come with the dataset. In production they would be estimated from a base-velocity model, so promo ROI should be read as an estimate.</li></ul><p style="margin-top:10px">This is a portfolio sample built on invented data. Before using measures like these in production, I validate them against source totals and agree the definitions with the business.</p></div></section>
 <section><h2>Key DAX measures</h2><pre><code>Gross Sales = SUM ( fact_trade_pnl[GrossSales] )
 
 Trade Spend =

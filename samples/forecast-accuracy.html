@@ -42,15 +42,17 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px soli
   <figure><a href="../images/samples/forecast-accuracy.png"><img src="../images/samples/forecast-accuracy.png" alt="Forecast Accuracy & S&OP Dashboard preview for the fictional brand Saltbrush Snack Co." width="2400" height="1350"></a>
   <figcaption>Dashboard preview. Click to open full size.</figcaption></figure>
   <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">WMAPE</span><span class="tag">Forecast bias</span><span class="tag">S&OP</span></div>
+  <div class="btns"><a class="btn primary" href="../demo/?p=fc">Open this report in the live demo</a><a class="btn" href="../index.html#walkthrough">Watch the walkthrough</a></div>
 </header>
 <section><div class="grid">
   <div class="box"><h3>What the report answers</h3><ul><li>Forecast accuracy (1 – WMAPE) and change vs. the prior period</li><li>Bias: is the forecast running high or low, by product line</li><li>Accuracy by SKU against an 80% target</li><li>The SKUs driving the most absolute error, with an S&amp;OP note</li></ul></div>
-  <div class="box"><h3>What the sample data shows</h3><p>Accuracy is 86% with almost no overall bias (+1.3%), but that hides opposite problems: popcorn is over-forecast by 12.7% and tortilla chips under-forecast by 5.9%. Three SKUs sit below 80% accuracy, and fixing Popcorn Kettle alone would remove the largest single source of error.</p></div>
+  <div class="box"><h3>What the sample data shows</h3><p>Accuracy is 86% with almost no overall bias (+1.3%), but that hides opposite problems: popcorn is over-forecast by 12.7% and tortilla chips under-forecast by 5.9%. 3 SKUs sit below 80% accuracy, and Popcorn Kettle is the largest single source of error.</p></div>
 </div></section>
 <section><h2>Data model</h2>
   <p class="lead" style="font-size:16px">A star schema: one fact table with the numbers, and dimension tables for filtering. Relationships are one-to-many from each dimension to the fact table on its ID or key column.</p>
   <table><tr><th>Table</th><th>Contents</th></tr><tr><td><code>fact_forecast</code></td><td>Month × SKU: forecast units, actual units</td></tr><tr><td><code>dim_product</code></td><td>SKU, product, product line</td></tr><tr><td><code>dim_month</code></td><td>Calculated table of months for slicing</td></tr></table>
 </section>
+<section><h2>Definitions &amp; caveats</h2><div class="box"><ul><li><b>WMAPE</b> = sum of |forecast − actual| at SKU × month ÷ sum of actuals. Errors are measured before aggregating, so over- and under-forecasts don't cancel out.</li><li><b>Bias</b> is measured on totals, so it shows direction (high or low), not size.</li><li>The sample stores one forecast version per month. A production model would store forecast snapshots by lag (1, 2, 3 months out) to measure accuracy at the decision point.</li></ul><p style="margin-top:10px">This is a portfolio sample built on invented data. Before using measures like these in production, I validate them against source totals and agree the definitions with the business.</p></div></section>
 <section><h2>Key DAX measures</h2><pre><code>dim_month = DISTINCT ( SELECTCOLUMNS ( fact_forecast, &quot;Month&quot;, fact_forecast[Month] ) )
 
 Forecast Units = SUM ( fact_forecast[ForecastUnits] )

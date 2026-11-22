@@ -84,6 +84,19 @@
   @media (prefers-color-scheme: dark) { .btn.primary { color: #0f1342; } .lvl.adv { color: #0f1342; } }
   .btn:hover { text-decoration: none; filter: brightness(1.05); }
 
+  .paths { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+  @media (max-width: 760px) { .paths { grid-template-columns: 1fr; } }
+  .path { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; }
+  .path h3 { margin: 6px 0 6px; font-size: 19px; }
+  .path p { margin: 0; color: var(--muted); font-size: 15px; }
+  .path .btns { margin-top: 16px; gap: 8px; }
+  .path .btn { padding: 8px 14px; font-size: 14px; }
+  .tag-k { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--accent); }
+  .watch { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 20px; }
+  .watch video { width: 100%; border-radius: 10px; display: block; background: #0f1342; aspect-ratio: 16 / 9; }
+  .watch h3 { margin: 0 0 8px; font-size: 19px; }
+  .watch p { margin: 0 0 14px; color: var(--muted); font-size: 15px; }
+  @media (max-width: 760px) { .watch { grid-template-columns: 1fr; } }
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 48px; }
   .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
   .stat b { display: block; font-size: 24px; color: var(--navy); }
@@ -190,10 +203,19 @@
       I specialize in food and CPG: retail sell-through and SPINS data, distributor and inventory reporting, demand forecasting, trade spend and pricing.
       My background in manufacturing and logistics helps me turn business questions into clear KPIs.
     </p>
-    <div class="btns">
-      <a class="btn primary" href="#samples">See Power BI samples</a>
-      <a class="btn" href="resume.pdf">Download résumé</a> <!-- upload your résumé as resume.pdf -->
-      <a class="btn" href="https://www.linkedin.com/in/adriana-smock">LinkedIn</a>
+    <div class="paths">
+      <div class="path">
+        <span class="tag-k">For recruiters &amp; hiring managers</span>
+        <h3>Hiring for a BI or Power BI role?</h3>
+        <p>See my experience, skills and résumé, then explore the six Power BI samples.</p>
+        <div class="btns"><a class="btn primary" href="resume.pdf">Download résumé</a><a class="btn" href="#experience">Experience</a><a class="btn" href="https://www.linkedin.com/in/adriana-smock">LinkedIn</a></div>
+      </div>
+      <div class="path">
+        <span class="tag-k">For food &amp; CPG brands</span>
+        <h3>Need Power BI reporting for your brand?</h3>
+        <p>Work with me through SYNESIS on a one-time project, monthly managed reporting or as a fractional analyst.</p>
+        <div class="btns"><a class="btn primary" href="https://synesisanalytics.com/consultation">Book a free consultation</a><a class="btn" href="#synesis">Services</a><a class="btn" href="demo/">Live demo</a></div>
+      </div>
     </div>
 
     <div class="stats">
@@ -208,6 +230,16 @@
   <section id="samples">
     <h2>Power BI samples for food &amp; CPG</h2>
     <p class="lead">Six reports built for Saltbrush Snack Co., a fictional snack brand, using invented data. Each sample includes the data model, the key DAX measures and the CSV files to rebuild it.</p>
+    <div class="watch" id="walkthrough">
+      <video controls preload="none" playsinline poster="media/walkthrough-poster.jpg" aria-label="75-second walkthrough of the six Power BI samples">
+        <source src="media/walkthrough.mp4" type="video/mp4">
+      </video>
+      <div>
+        <h3>See how the reports work</h3>
+        <p>A 75-second walkthrough of all six reports, or open the live demo to hover over charts and switch between reports yourself.</p>
+        <div class="btns" style="margin-top:0"><a class="btn primary" href="demo/">Open the live demo</a></div>
+      </div>
+    </div>
     <div class="samples">
       <a class="sample" href="samples/pricing-profitability.html">
         <img src="images/samples/pricing-profitability-thumb.jpg" alt="Pricing and profitability dashboard preview" loading="lazy" width="880" height="495">

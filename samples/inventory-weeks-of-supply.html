@@ -42,15 +42,17 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px soli
   <figure><a href="../images/samples/inventory-weeks-of-supply.png"><img src="../images/samples/inventory-weeks-of-supply.png" alt="Inventory & Weeks of Supply Dashboard preview for the fictional brand Saltbrush Snack Co." width="2400" height="1350"></a>
   <figcaption>Dashboard preview. Click to open full size.</figcaption></figure>
   <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Snapshot measures</span><span class="tag">Inventory planning</span><span class="tag">Conditional formatting</span></div>
+  <div class="btns"><a class="btn primary" href="../demo/?p=inv">Open this report in the live demo</a><a class="btn" href="../index.html#walkthrough">Watch the walkthrough</a></div>
 </header>
 <section><div class="grid">
   <div class="box"><h3>What the report answers</h3><ul><li>Inventory on hand at cost and network weeks of supply</li><li>A heat map of weeks of supply by product and DC</li><li>Stockout-risk (&lt; 2 weeks) and overstock (&gt; 8 weeks) positions</li><li>Inventory with a best-by date in the next 60 days, plus an action list</li></ul></div>
-  <div class="box"><h3>What the sample data shows</h3><p>The network sits at 4.5 weeks of supply, inside the 3–6 week target, but that average hides 6 positions at stockout risk, including three tortilla chip items in Salt Lake City, and 5 overstocked positions. The action list turns those into transfers, expedited POs or paused orders.</p></div>
+  <div class="box"><h3>What the sample data shows</h3><p>The network sits at 4.7 weeks of supply, inside the 3–6 week target, but that average hides 6 positions at stockout risk, including 3 tortilla chip items in Salt Lake City, and 6 overstocked positions, led by Kettle Chips Jalapeño in Denver (15.3 weeks). The action list turns those into transfers, expedited POs or paused orders.</p></div>
 </div></section>
 <section><h2>Data model</h2>
   <p class="lead" style="font-size:16px">A star schema: one fact table with the numbers, and dimension tables for filtering. Relationships are one-to-many from each dimension to the fact table on its ID or key column.</p>
   <table><tr><th>Table</th><th>Contents</th></tr><tr><td><code>fact_dc_inventory</code></td><td>Week × DC × SKU: on hand, shipped, 4-week average demand, oldest lot best-by date</td></tr><tr><td><code>dim_week</code></td><td>Week ending, year, month, fiscal week</td></tr><tr><td><code>dim_product</code></td><td>SKU, product, product line, unit cost</td></tr><tr><td><code>dim_dc</code></td><td>Distribution center and city</td></tr></table>
 </section>
+<section><h2>Definitions &amp; caveats</h2><div class="box"><ul><li>Inventory is a <b>snapshot</b>: every measure uses the latest week in the filter and is never summed across weeks.</li><li><b>Weeks of supply</b> = on hand ÷ trailing 4-week average shipments at DC × SKU level. The network figure divides totals, so larger positions weigh more than small ones.</li><li>The 2-week and 8-week thresholds are planning assumptions that would be agreed with the client.</li><li>Best-by risk uses the oldest lot in each position, so it is a conservative flag.</li></ul><p style="margin-top:10px">This is a portfolio sample built on invented data. Before using measures like these in production, I validate them against source totals and agree the definitions with the business.</p></div></section>
 <section><h2>Key DAX measures</h2><pre><code>-- Inventory is a snapshot, so every measure looks at the latest week in context
 On Hand Units =
 VAR LastWk = MAX ( dim_week[WeekEnding] )

@@ -42,15 +42,17 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px soli
   <figure><a href="../images/samples/retail-sell-through.png"><img src="../images/samples/retail-sell-through.png" alt="Retail Sell-Through Dashboard preview for the fictional brand Saltbrush Snack Co." width="2400" height="1350"></a>
   <figcaption>Dashboard preview. Click to open full size.</figcaption></figure>
   <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Time intelligence</span><span class="tag">SPINS-style data</span><span class="tag">Retail analytics</span></div>
+  <div class="btns"><a class="btn primary" href="../demo/?p=sell">Open this report in the live demo</a><a class="btn" href="../index.html#walkthrough">Watch the walkthrough</a></div>
 </header>
 <section><div class="grid">
-  <div class="box"><h3>What the report answers</h3><ul><li>Retail $ and units, latest 52 weeks vs. year ago</li><li>Distribution (% of stores selling) and how many points it gained</li><li>Velocity: $ per store, per SKU, per week, by product line</li><li>Promotion lift: base vs. promo velocity by retailer</li></ul></div>
-  <div class="box"><h3>What the sample data shows</h3><p>Sales grew 26.3% vs. year ago. Distribution gained 8.8 points and velocity grew 10.0%, so growth came from both new stores and existing stores selling more. Promotions lifted velocity most at Summit Grocery and least at Corner Convenience, which is where a trade conversation should start.</p></div>
+  <div class="box"><h3>What the report answers</h3><ul><li>Retail $ and units, latest 52 weeks vs. year ago</li><li>Average item distribution (% of stores selling each item) and points gained</li><li>Velocity: $ per store, per SKU, per week, by product line</li><li>Promotion lift: base vs. promo velocity by retailer</li></ul></div>
+  <div class="box"><h3>What the sample data shows</h3><p>Sales grew 26.3% vs. year ago. Average item distribution gained 8.8 points and velocity grew 10.0%, so growth came from both new stores and existing stores selling more. Promotions lifted velocity most at Summit Grocery (+92%) and least at Corner Convenience (+19%), which is where a trade conversation should start.</p></div>
 </div></section>
 <section><h2>Data model</h2>
   <p class="lead" style="font-size:16px">A star schema: one fact table with the numbers, and dimension tables for filtering. Relationships are one-to-many from each dimension to the fact table on its ID or key column.</p>
   <table><tr><th>Table</th><th>Contents</th></tr><tr><td><code>fact_retail_sales</code></td><td>Week × retailer × SKU: units, dollars, stores selling, total stores, promo flag</td></tr><tr><td><code>dim_week</code></td><td>Week ending, year, month, fiscal week (1–104)</td></tr><tr><td><code>dim_product</code></td><td>SKU, product, product line, flavor, list price, unit cost</td></tr><tr><td><code>dim_retailer</code></td><td>Retailer, channel, total stores</td></tr></table>
 </section>
+<section><h2>Definitions &amp; caveats</h2><div class="box"><ul><li><b>Average item distribution</b> = stores selling ÷ total stores, summed over retailer × SKU × week rows. Over a period it is the average weekly share of each retailer's stores selling each item.</li><li>This is <b>numeric distribution, not weighted ACV</b>. Weighted ACV weights each store by its all-commodity sales volume and needs store-level ACV data, which this sample doesn't include. Brand-level distribution (stores selling any Saltbrush item) is higher: 69.1% vs. 68.0% for the average item.</li><li><b>Velocity</b> = retail $ ÷ stores selling, summed over the same rows. Summing store counts across weeks is intentional: it turns them into store-weeks, so the result is $ per store selling, per item, per week.</li><li>Year-ago measures shift the selected window back 52 fiscal weeks, so they expect a period filter such as the latest 52 weeks.</li><li>Promo lift compares velocity in promoted vs. non-promoted weeks at the same retailer. It does not adjust for seasonality, so read it as directional.</li></ul><p style="margin-top:10px">This is a portfolio sample built on invented data. Before using measures like these in production, I validate them against source totals and agree the definitions with the business.</p></div></section>
 <section><h2>Key DAX measures</h2><pre><code>Retail $ = SUM ( fact_retail_sales[Dollars] )
 
 -- Same 52-week window shifted back one year, using the fiscal week number
@@ -67,8 +69,10 @@ RETURN
 
 Retail $ % Chg YA = DIVIDE ( [Retail $] - [Retail $ YA], [Retail $ YA] )
 
--- Share of the retailer&#x27;s stores selling the item (a %ACV proxy)
-% Stores Selling =
+-- Average item distribution: share of each retailer&#x27;s stores selling each item.
+-- Numeric distribution, not weighted ACV (no store-level all-commodity volume in this data).
+-- Summed over weeks it becomes the average weekly share.
+Avg Item Distribution % =
 DIVIDE ( SUM ( fact_retail_sales[StoresSelling] ), SUM ( fact_retail_sales[TotalStores] ) )
 
 Velocity $/Store/SKU/Wk =

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live demo · Saltbrush Snack Co. Power BI samples · Adriana Smock</title>
+<meta name="description" content="Interactive demo of six Power BI-style reports for a fictional food & CPG brand: sell-through, inventory, forecasting, trade spend, SKU profitability and pricing.">
+<meta property="og:title" content="Live demo · Power BI samples for food & CPG">
+<meta property="og:image" content="https://adrianasmock.github.io/images/og-image.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0F1342;--teal:#007a7a;--mint:#9AD5C2;--bg:#EDF2F6;--muted:#5b6270}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px/1.5 Inter,system-ui,sans-serif;color:#16181d}
+a{color:var(--teal)}
+.bar{background:var(--navy);color:#fff}
+.bar .in{max-width:1640px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.bar a{color:var(--mint);text-decoration:none;font-weight:600}.bar b{font-weight:700}
+.bar .sp{flex:1}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs a{color:#D5D9F2;font-weight:500;font-size:13.5px;padding:6px 10px;border-radius:8px}
+.tabs a.on,.tabs a:hover{background:var(--mint);color:var(--navy)}
+.wrap{max-width:1640px;margin:0 auto;padding:16px 20px 28px}
+.note{font-size:13.5px;color:var(--muted);margin:0 0 12px;display:flex;gap:18px;flex-wrap:wrap}
+.note span::before{content:"•";color:var(--teal);margin-right:6px}
+#frame{width:100%;position:relative;border-radius:14px;overflow:hidden;box-shadow:0 10px 40px rgba(15,19,66,.12);background:#fff}
+#frame iframe{width:1600px;height:900px;border:0;transform-origin:0 0;position:absolute;left:0;top:0}
+.small{display:none;background:#fff;border:1px solid #e3e6eb;border-radius:12px;padding:14px;margin-bottom:12px;font-size:14px}
+@media (max-width:820px){.small{display:block}.tabs{display:none}}
+.foot{font-size:13px;color:var(--muted);margin-top:12px}
+</style></head><body>
+<div class="bar"><div class="in">
+  <a href="../index.html#samples">&larr; Portfolio</a>
+  <b>Saltbrush Snack Co. · live demo</b>
+  <div class="sp"></div>
+  <nav class="tabs" id="tabs"></nav>
+</div></div>
+<div class="wrap">
+  <div class="small">This demo is built for a desktop screen. On a phone, turn it sideways or open it on a computer for the full view.</div>
+  <p class="note"><span>Hover any chart for exact values</span><span>Switch reports from the left menu or the tabs above</span><span>“Data model &amp; DAX” opens how each report is built</span></p>
+  <div id="frame"><iframe id="dash" title="Interactive Power BI-style report" loading="eager"></iframe></div>
+  <p class="foot">Interactive web version of my Power BI sample reports, built from the same invented dataset and measure logic. Saltbrush Snack Co. is a fictional brand. <a href="../samples/retail-sell-through.html">Read how the reports are built</a> or <a href="https://synesisanalytics.com/consultation">book a consultation</a>.</p>
+</div>
+<script>
+const P=[["sell","Sell-Through"],["inv","Inventory"],["fc","Forecast"],["trade","Trade"],["sku","SKU Profitability"],["price","Pricing"]];
+const q=new URLSearchParams(location.search);let cur=q.get("p")||"sell";if(!P.some(x=>x[0]==cur))cur="sell";
+const f=document.getElementById("dash"),box=document.getElementById("frame"),tabs=document.getElementById("tabs");
+function go(k,push){cur=k;f.src="dashboard.html?p="+k;tabs.innerHTML=P.map(([a,t])=>`<a href="?p=${a}" data-k="${a}" class="${a==k?"on":""}">${t}</a>`).join("");if(push)history.pushState(null,"","?p="+k);}
+tabs.addEventListener("click",e=>{const a=e.target.closest("a");if(!a)return;e.preventDefault();go(a.dataset.k,true);});
+window.addEventListener("popstate",()=>go(new URLSearchParams(location.search).get("p")||"sell",false));
+f.addEventListener("load",()=>{try{const k=new URL(f.contentWindow.location.href).searchParams.get("p");if(k&&k!==cur){cur=k;tabs.querySelectorAll("a").forEach(a=>a.classList.toggle("on",a.dataset.k==k));history.replaceState(null,"","?p="+k);}}catch(e){}});
+function fit(){const s=box.clientWidth/1600;f.style.transform=`scale(${s})`;box.style.height=(900*s)+"px";}
+window.addEventListener("resize",fit);go(cur,false);fit();
+</script>
+</body></html>

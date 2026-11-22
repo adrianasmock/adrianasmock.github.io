@@ -42,15 +42,17 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px soli
   <figure><a href="../images/samples/sku-profitability.png"><img src="../images/samples/sku-profitability.png" alt="SKU Profitability Model preview for the fictional brand Saltbrush Snack Co." width="2400" height="1350"></a>
   <figcaption>Dashboard preview. Click to open full size.</figcaption></figure>
   <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Contribution margin</span><span class="tag">Pareto</span><span class="tag">SKU rationalization</span></div>
+  <div class="btns"><a class="btn primary" href="../demo/?p=sku">Open this report in the live demo</a><a class="btn" href="../index.html#walkthrough">Watch the walkthrough</a></div>
 </header>
 <section><div class="grid">
   <div class="box"><h3>What the report answers</h3><ul><li>Net sales, contribution margin $ and % by SKU</li><li>A profit quadrant: velocity vs. contribution margin %, sized by net sales</li><li>A Pareto view of which SKUs earn most of the contribution</li><li>Unit economics by product line: COGS, freight, trade and contribution per unit</li></ul></div>
-  <div class="box"><h3>What the sample data shows</h3><p>Contribution margin is $639K, or 31.4% of net sales. Popcorn Sea Salt earns the most ($101K at 41.1%). Kettle Chips Jalapeño is the fourth-fastest seller but has the lowest margin (22.3%), so price or seasoning cost is the lever, not distribution. Two SKUs sit below 25% contribution margin.</p></div>
+  <div class="box"><h3>What the sample data shows</h3><p>Contribution margin is $664K, or 31.2% of net sales. Popcorn Sea Salt earns the most ($105K at 40.9%). Kettle Chips Jalapeño is the fourth-fastest seller but has the lowest margin (21.8%), so price or seasoning cost is the lever, not distribution. Two SKUs sit below 25% contribution margin.</p></div>
 </div></section>
 <section><h2>Data model</h2>
   <p class="lead" style="font-size:16px">A star schema: one fact table with the numbers, and dimension tables for filtering. Relationships are one-to-many from each dimension to the fact table on its ID or key column.</p>
   <table><tr><th>Table</th><th>Contents</th></tr><tr><td><code>fact_sku_pnl</code></td><td>Month × customer × SKU: units, gross sales, off-invoice, scan-downs, slotting and spoilage (allocated by gross sales share), COGS, freight</td></tr><tr><td><code>fact_retail_sales</code></td><td>Week × retailer × SKU scan data, used for velocity</td></tr><tr><td><code>dim_product</code></td><td>SKU, product, product line, unit cost, freight per unit</td></tr><tr><td><code>dim_retailer</code></td><td>Customer, channel, total stores</td></tr></table>
 </section>
+<section><h2>Definitions &amp; caveats</h2><div class="box"><ul><li><b>Contribution margin</b> = net sales − COGS − freight. Slotting and spoilage are allocated to SKUs by their share of each customer's gross sales that month.</li><li>The P&amp;L covers the latest 12 complete months (Nov 2025 – Oct 2026); velocity uses the latest 52 weeks of scan data, so the two periods line up closely but not exactly.</li><li>Quadrant lines are the medians of the SKUs in the filter, so a SKU's suggested action can change when filters change.</li></ul><p style="margin-top:10px">This is a portfolio sample built on invented data. Before using measures like these in production, I validate them against source totals and agree the definitions with the business.</p></div></section>
 <section><h2>Key DAX measures</h2><pre><code>Gross Sales = SUM ( fact_sku_pnl[GrossSales] )
 
 Trade Spend =

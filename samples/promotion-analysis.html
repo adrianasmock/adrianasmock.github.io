@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Promotion Analysis Dashboard · Power BI sample · Adriana Smock</title>
+<meta name="description" content="Which promotions actually paid for themselves? This report measures every promo week against a baseline built from the surrounding non-promo weeks, then shows lift, incremental units, spend and ROI by retailer, product line and season.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>:root{--bg:#f7f8fa;--surface:#fff;--text:#16181d;--muted:#5b6270;--border:#e3e6eb;--accent:#007a7a;--accent-soft:#e3f4ee;--code:#0f1342;--code-text:#e8eaee}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--surface:#171a21;--text:#e8eaee;--muted:#9aa2b1;--border:#272b35;--accent:#9ad5c2;--accent-soft:#15302f;--code:#0b0d12}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 Inter,system-ui,sans-serif}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px}
+nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}nav .logo{font-weight:700;color:var(--text)}
+nav ul{list-style:none;display:flex;gap:20px;margin:0;padding:0;font-size:15px}nav ul a{color:var(--muted)}
+header{padding:56px 0 28px}.eyebrow{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--accent);margin:0 0 12px}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.12;margin:0 0 16px;letter-spacing:-.02em}
+.lead{font-size:18px;color:var(--muted);max-width:720px;margin:0 0 12px}
+.note{display:inline-block;font-size:14px;color:var(--muted);background:var(--accent-soft);border-radius:8px;padding:8px 12px;margin-top:8px}
+figure{margin:24px 0 8px}figure img{width:100%;border-radius:10px;border:1px solid var(--border);display:block}
+figcaption{font-size:14px;color:var(--muted);margin-top:8px}
+section{padding:40px 0;border-top:1px solid var(--border)}h2{font-size:24px;margin:0 0 16px;letter-spacing:-.01em}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}.box h3{margin:0 0 8px;font-size:16px}
+.box p,.box li{color:var(--muted);font-size:15px}.box ul{margin:0;padding-left:18px}.box p{margin:0}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:9px 12px;border-top:1px solid var(--border);vertical-align:top}th{background:var(--accent-soft);color:var(--text);border-top:0}
+td code{font-family:"JetBrains Mono",monospace;font-size:13px}
+pre{background:var(--code);color:var(--code-text);border-radius:12px;padding:18px;overflow-x:auto;font:13px/1.55 "JetBrains Mono",monospace;margin:0 0 16px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}.tag{font-family:"JetBrains Mono",monospace;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.btn{display:inline-block;padding:10px 18px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--border);color:var(--text);background:var(--surface)}
+.btn.primary{background:#0f1342;border-color:#0f1342;color:#fff}.btn:hover{text-decoration:none;filter:brightness(1.05)}
+.more{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.more a{display:block;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;color:var(--text);font-weight:600}
+footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px solid var(--border)}</style></head><body>
+<nav><div class="wrap"><a class="logo" href="../index.html">Adriana Smock</a><ul>
+<li><a href="../index.html#samples">Samples</a></li><li><a href="../index.html#projects">Work</a></li><li><a href="../index.html#contact">Contact</a></li></ul></div></nav>
+<div class="wrap">
+<header>
+  <p class="eyebrow">Power BI sample · Trade marketing · Promo post-event analysis</p>
+  <h1>Promotion Analysis Dashboard</h1>
+  <p class="lead">Which promotions actually paid for themselves? This report measures every promo week against a baseline built from the surrounding non-promo weeks, then shows lift, incremental units, spend and ROI by retailer, product line and season.</p>
+  <span class="note">Saltbrush Snack Co. is a fictional brand. Every number on this page comes from an invented dataset, not from an employer or client.</span>
+  <figure><a href="../images/samples/promotion-analysis.png"><img src="../images/samples/promotion-analysis.png" alt="Promotion Analysis Dashboard preview for the fictional brand Saltbrush Snack Co." width="2400" height="1350"></a>
+  <figcaption>Dashboard preview. Click to open full size.</figcaption></figure>
+  <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Promo lift</span><span class="tag">Baseline modeling</span><span class="tag">Trade ROI</span></div>
+  <div class="btns"><a class="btn primary" href="../demo/?p=promo">Open this report in the live demo</a><a class="btn" href="../index.html#walkthrough">Watch the walkthrough</a></div>
+</header>
+<section><div class="grid">
+  <div class="box"><h3>What the report answers</h3><ul><li>A promo calendar: how many SKUs were on promotion at each retailer, each week</li><li>Lift vs. ROI for every promo week, with a break-even line</li><li>Promo ROI and lift by retailer</li><li>The best and worst retailer × product line combinations, and lift and ROI by quarter</li></ul></div>
+  <div class="box"><h3>What the sample data shows</h3><p>Promotions lifted units +41% above baseline, but only 39% of the 437 promo weeks paid back their spend, for an overall ROI of −17%. Summit Grocery returns +30% on a +78% lift, while Mountain Market takes the most spend ($17K) at −37% and Corner Convenience is lowest at −54%. Popcorn is the only line near break-even (+1%), so the next step is moving promo weeks toward the retailers and lines that earn them back.</p></div>
+</div></section>
+<section><h2>Data model</h2>
+  <p class="lead" style="font-size:16px">A star schema: one fact table with the numbers, and dimension tables for filtering. Relationships are one-to-many from each dimension to the fact table on its ID or key column.</p>
+  <table><tr><th>Table</th><th>Contents</th></tr><tr><td><code>fact_retail_sales</code></td><td>Week × retailer × SKU scan data, with calculated columns for baseline velocity, baseline units, incremental units, promo spend and incremental gross profit</td></tr><tr><td><code>dim_week</code></td><td>Week ending and fiscal week (used for the ±4-week baseline window)</td></tr><tr><td><code>dim_product</code></td><td>SKU, product line, unit cost</td></tr><tr><td><code>dim_retailer</code></td><td>Retailer and channel</td></tr></table>
+</section>
+<section><h2>Definitions &amp; caveats</h2><div class="box"><ul><li><b>Baseline</b> = average non-promo velocity (units per store selling) for the same retailer and SKU within 4 fiscal weeks either side, times stores selling in the promo week.</li><li><b>Lift</b> = promo units ÷ baseline units − 1. <b>Incremental units</b> = promo units − baseline units.</li><li><b>Promo spend</b> is the brand-funded half of the shelf discount. <b>Incremental gross profit</b> = incremental units × (wholesale price − unit cost).</li><li><b>Promo ROI</b> = (incremental gross profit − spend) ÷ spend. It ignores halo, cannibalization and pantry-loading (post-promo dips), which a production model would test.</li><li>Period: promo weeks in the latest 52 weeks; the baseline can use non-promo weeks just outside that window.</li></ul><p style="margin-top:10px">This is a portfolio sample built on invented data. Before using measures like these in production, I validate them against source totals and agree the definitions with the business.</p></div></section>
+<section><h2>Key DAX measures</h2><pre><code>-- Calculated columns on fact_retail_sales
+Velocity = DIVIDE ( fact_retail_sales[Units], fact_retail_sales[StoresSelling] )
+FiscalWeek = RELATED ( dim_week[FiscalWeek] )
+
+-- Baseline: average non-promo velocity for the same retailer and SKU within 4 weeks either side.
+-- ALL() over named columns (not the whole table) avoids a circular dependency.
+Baseline Velocity =
+VAR R = fact_retail_sales[RetailerID]
+VAR S = fact_retail_sales[SKU]
+VAR W = fact_retail_sales[FiscalWeek]
+RETURN
+    IF ( fact_retail_sales[PromoFlag] = 1,
+        AVERAGEX (
+            FILTER (
+                ALL ( fact_retail_sales[RetailerID], fact_retail_sales[SKU], fact_retail_sales[PromoFlag],
+                      fact_retail_sales[FiscalWeek], fact_retail_sales[Velocity] ),
+                fact_retail_sales[RetailerID] = R &amp;&amp; fact_retail_sales[SKU] = S
+                    &amp;&amp; fact_retail_sales[PromoFlag] = 0 &amp;&amp; ABS ( fact_retail_sales[FiscalWeek] - W ) &lt;= 4
+            ),
+            fact_retail_sales[Velocity]
+        )
+    )
+
+Baseline Units = IF ( fact_retail_sales[PromoFlag] = 1, fact_retail_sales[Baseline Velocity] * fact_retail_sales[StoresSelling] )
+Incremental Units = IF ( fact_retail_sales[PromoFlag] = 1, fact_retail_sales[Units] - fact_retail_sales[Baseline Units] )
+-- Brand funds half of the shelf discount in this sample
+Promo Spend = IF ( fact_retail_sales[PromoFlag] = 1,
+    ( fact_retail_sales[Units] * fact_retail_sales[ShelfListPrice] - fact_retail_sales[Dollars] ) * 0.5 )
+Incremental GP = IF ( fact_retail_sales[PromoFlag] = 1,
+    fact_retail_sales[Incremental Units] * ( fact_retail_sales[ShelfListPrice] * 0.62 - RELATED ( dim_product[UnitCost] ) ) )
+
+-- Measures
+Promo Weeks = CALCULATE ( COUNTROWS ( fact_retail_sales ), fact_retail_sales[PromoFlag] = 1 )
+
+Promo Lift % =
+DIVIDE ( CALCULATE ( SUM ( fact_retail_sales[Units] ), fact_retail_sales[PromoFlag] = 1 ),
+         SUM ( fact_retail_sales[Baseline Units] ) ) - 1
+
+Total Incremental Units = SUM ( fact_retail_sales[Incremental Units] )
+Total Promo Spend = SUM ( fact_retail_sales[Promo Spend] )
+Total Incremental GP = SUM ( fact_retail_sales[Incremental GP] )
+
+Promo ROI = DIVIDE ( [Total Incremental GP] - [Total Promo Spend], [Total Promo Spend] )
+
+% Promo Weeks Paid Back =
+DIVIDE (
+    COUNTROWS ( FILTER ( fact_retail_sales,
+        fact_retail_sales[PromoFlag] = 1 &amp;&amp; fact_retail_sales[Incremental GP] &gt; fact_retail_sales[Promo Spend] ) ),
+    [Promo Weeks]
+)</code></pre></section>
+<section><h2>Sample data</h2>
+  <p>Download the CSV files to rebuild this report: <a href="data/fact_retail_sales.csv">fact_retail_sales.csv</a> · <a href="data/dim_week.csv">dim_week.csv</a> · <a href="data/dim_product.csv">dim_product.csv</a> · <a href="data/dim_retailer.csv">dim_retailer.csv</a>, or get <a href="data/saltbrush-sample-data.zip">all sample files (.zip)</a>.</p>
+  <div class="btns"><a class="btn primary" href="https://synesisanalytics.com/consultation">Want this for your brand? Book a consultation</a><a class="btn" href="../index.html#samples">All samples</a></div>
+</section>
+<section><h2>More samples</h2><div class="more"><a href="retail-sell-through.html">Retail sell-through &rarr;</a><a href="inventory-weeks-of-supply.html">Inventory &amp; weeks of supply &rarr;</a><a href="forecast-accuracy.html">Forecast accuracy &amp; S&amp;OP &rarr;</a><a href="trade-spend-margin.html">Trade spend &amp; margin &rarr;</a><a href="sku-profitability.html">SKU profitability &rarr;</a><a href="pricing-profitability.html">Pricing &amp; profitability &rarr;</a></div></section>
+</div>
+<footer><div class="wrap">© 2026 Adriana Smock · Sample built with invented data</div></footer>
+</body></html>

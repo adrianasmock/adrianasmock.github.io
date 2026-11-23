@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Live demo · Saltbrush Snack Co. Power BI samples · Adriana Smock</title>
-<meta name="description" content="Interactive demo of six Power BI-style reports for a fictional food & CPG brand: sell-through, inventory, forecasting, trade spend, SKU profitability and pricing.">
+<meta name="description" content="Interactive demo of seven Power BI-style reports for a fictional food & CPG brand: sell-through, inventory, forecasting, trade spend, SKU profitability, pricing and promotions.">
 <meta property="og:title" content="Live demo · Power BI samples for food & CPG">
 <meta property="og:image" content="https://adrianasmock.github.io/images/og-image.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@ a{color:var(--teal)}
   <p class="foot">Interactive web version of my Power BI sample reports, built from the same invented dataset and measure logic. Saltbrush Snack Co. is a fictional brand. <a href="../samples/retail-sell-through.html">Read how the reports are built</a> or <a href="https://synesisanalytics.com/consultation">book a consultation</a>.</p>
 </div>
 <script>
-const P=[["sell","Sell-Through"],["inv","Inventory"],["fc","Forecast"],["trade","Trade"],["sku","SKU Profitability"],["price","Pricing"]];
+const P=[["sell","Sell-Through"],["inv","Inventory"],["fc","Forecast"],["trade","Trade"],["sku","SKU Profitability"],["price","Pricing"],["promo","Promotions"]];
 const q=new URLSearchParams(location.search);let cur=q.get("p")||"sell";if(!P.some(x=>x[0]==cur))cur="sell";
 const f=document.getElementById("dash"),box=document.getElementById("frame"),tabs=document.getElementById("tabs");
 function go(k,push){cur=k;f.src="dashboard.html?p="+k;tabs.innerHTML=P.map(([a,t])=>`<a href="?p=${a}" data-k="${a}" class="${a==k?"on":""}">${t}</a>`).join("");if(push)history.pushState(null,"","?p="+k);}

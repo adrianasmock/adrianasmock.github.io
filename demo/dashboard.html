@@ -108,9 +108,9 @@ const K=(v)=>Math.abs(v)>=1e6?`${(v/1e6).toFixed(2)}M`:`${(v/1e3).toFixed(0)}K`;
 const P=(v,d=1)=>`${(v*100).toFixed(d)}%`, SP=(v,d=1)=>`${v>=0?"+":""}${(v*100).toFixed(d)}%`;
 const arr=(v,good=true)=>`<span class="${good?"up":"dn"}"><i class="fa-solid fa-caret-${v>=0?"up":"down"}"></i> `;
 const grid=document.getElementById("grid");
-const NAV=[["sell","fa-cart-shopping","Sell-Through"],["inv","fa-warehouse","Inventory & Supply"],["fc","fa-chart-line","Forecast & S&OP"],["trade","fa-hand-holding-dollar","Trade & Margin"],["sku","fa-coins","SKU Profitability"],["price","fa-tag","Pricing & Profit"]];
+const NAV=[["sell","fa-cart-shopping","Sell-Through"],["inv","fa-warehouse","Inventory & Supply"],["fc","fa-chart-line","Forecast & S&OP"],["trade","fa-hand-holding-dollar","Trade & Margin"],["sku","fa-coins","SKU Profitability"],["price","fa-tag","Pricing & Profit"],["promo","fa-bullhorn","Promotion Analysis"]];
 document.getElementById("nav").innerHTML=NAV.map(([k,i,t])=>`<a href="?p=${k}" class="${k==page?"on":""}"><i class="fa-solid ${i}"></i>${t}</a>`).join("");
-const SLUG={sell:"retail-sell-through",inv:"inventory-weeks-of-supply",fc:"forecast-accuracy",trade:"trade-spend-margin",sku:"sku-profitability",price:"pricing-profitability"};
+const SLUG={promo:"promotion-analysis",sell:"retail-sell-through",inv:"inventory-weeks-of-supply",fc:"forecast-accuracy",trade:"trade-spend-margin",sku:"sku-profitability",price:"pricing-profitability"};
 document.getElementById("dm").href=`../samples/${SLUG[page]}.html`;
 function head(t1,t2,sub,sl){document.getElementById("title").innerHTML=`<span>${t1}</span> ${t2}`;document.getElementById("sub").textContent=sub;
  document.getElementById("slicers").innerHTML=sl.map(([l,i,v])=>`<div class="sl"><label>${l}</label><div><i class="fa-solid ${i}"></i>${v}<i class="fa-solid fa-chevron-down"></i></div></div>`).join("")+`<div class="btn"><i class="fa-solid fa-download"></i>Export</div>`;}
@@ -138,7 +138,7 @@ document.addEventListener("click",e=>{if(e.target.closest(".sl div,.btn"))toast(
 function fit(){const z=Math.min(1,window.innerWidth/1600);document.body.style.zoom=z;}
 
 document.querySelectorAll(".heat .c").forEach(()=>{});
-fetch("data.json").then(r=>r.json()).then(D=>{({sell,inv,fc,trade,sku,price})[page](D[page]);document.body.dataset.ready=1;});
+fetch("data.json").then(r=>r.json()).then(D=>{({sell,inv,fc,trade,sku,price,promo})[page](D[page]);document.body.dataset.ready=1;});
 
 function sell(d){const k=d.kpi;
  head("RETAIL","SELL-THROUGH","Latest 52 weeks vs. year ago · SPINS-style scan data across 6 retailers",[["Date range","fa-calendar","Latest 52 weeks"],["Retailer","fa-store","All retailers"],["Product line","fa-box","All lines"]]);
@@ -335,5 +335,43 @@ function price(d){const k=d.kpi;const el=d.resp.elasticity;
  new Chart(c5,{type:"bar",data:{labels:d.netline.map(x=>x.name.replace(" Chips","")),datasets:[{label:"Prior 12 months",pre:"$",data:d.netline.map(x=>x.cm_ya),backgroundColor:C.gray,borderRadius:4},{label:"Latest 12 months",pre:"$",data:d.netline.map(x=>x.cm_ty),backgroundColor:C.navy,borderRadius:4}]},
   options:{layout:{padding:{top:16}},scales:{x:noGridX,y:{...gridY,min:0,ticks:{callback:v=>`$${v.toFixed(2)}`,maxTicksLimit:5}}},
   plugins:{datalabels:{display:true,anchor:"end",align:"end",font:{weight:700,size:10.5},color:c=>c.datasetIndex?C.navy:"#6B7385",formatter:v=>`$${v.toFixed(2)}`}}}});
+}
+
+function promo(d){const k=d.kpi;const LC={"Kettle Chips":C.navy,"Tortilla Chips":C.teal,"Popcorn":C.orange};
+ head("PROMOTION","ANALYSIS","Lift, incremental units and ROI for every promo week · latest 52 weeks",[["Date range","fa-calendar","Latest 52 weeks"],["Retailer","fa-store","All retailers"],["Product line","fa-box","All lines"]]);
+ kpis([{icon:"fa-tags",cls:"warn",label:"Promo spend (brand)",value:M(k.spend),delta:`<span class="neu">${k.weeks} promo weeks</span>`,spark:d.spark.spend,sc:C.orange},
+  {icon:"fa-arrow-trend-up",label:"Avg. lift vs. baseline",value:SP(k.lift,0),delta:`<span class="neu">${P(k.share,0)} of units sold on promo</span>`,spark:d.spark.lift},
+  {icon:"fa-boxes-stacked",label:"Incremental units",value:K(k.inc),delta:`<span class="neu">above baseline</span>`,spark:d.spark.inc},
+  {icon:"fa-sack-dollar",cls:k.roi<0?"bad":"",label:"Promo ROI",value:SP(k.roi,0),delta:`<span class="${k.roi<0?"dn":"up"}">incr. GP ${M(k.incgp)} vs. spend</span>`,spark:d.spark.roi,sc:k.roi<0?C.red:C.teal},
+  {icon:"fa-circle-check",label:"Weeks that paid back",value:P(k.pos,0),delta:`<span class="neu">ROI above zero</span>`,spark:d.retailers.map(x=>x.pos),sc:C.navy2}]);
+ grid.style.gridTemplateColumns="1.42fr 1.05fr .85fr";grid.style.gridTemplateRows="1fr 1fr";
+ const mx=Math.max(...d.calendar.values.flat());
+ const shade=v=>v==0?"#F1F4F7":["#CFEDE3","#9AD5C2","#4DB3A8","#009393","#0B6F86","#0F1342"][Math.min(5,v-1)];
+ const cal=`<div class="keys">${[0,1,2,3,4,5].map(v=>`<span><i style="background:${shade(v)}"></i>${v==0?"none":v==5?"5+ SKUs":v+" SKU"+(v>1?"s":"")}</span>`).join("")}</div>
+  <div style="display:grid;grid-template-columns:128px repeat(${d.calendar.weeks.length},minmax(0,1fr));gap:2px;font-size:11px;flex:1;grid-auto-rows:1fr">
+  ${d.calendar.retailers.map((r,i)=>`<div class="rl" style="align-self:center">${r}</div>`+d.calendar.values[i].map((v,j)=>`<div title="${r} · ${d.calendar.weeks[j]}: ${v} SKU${v==1?"":"s"} on promo" style="background:${shade(v)};border-radius:2px"></div>`).join("")).join("")}
+  <div></div>${d.calendar.weeks.map((w,j)=>`<div style="font-size:9px;color:#6B7385;white-space:nowrap;overflow:visible;width:0">${j%9==0?w:""}</div>`).join("")}</div>`;
+ const pill=v=>`<span class="pill ${v<0?"r":"g"}">${SP(v,0)}</span>`;
+ grid.innerHTML=`<div class="p"><h3><span class="n">1</span>Promo calendar: SKUs on promo by retailer &amp; week</h3>${cal}</div>`
+  +panel("b",2,"Lift vs. ROI",cv("c2"),Object.entries(LC).map(([n,c])=>lg(c,n.replace(" Chips",""))).join(""))
+  +panel("c",3,"ROI by retailer",cv("c3")+note("Bars = promo ROI; labels show average lift."))
+  +panel("d",4,"Best &amp; worst retailer × line",`<table class="tight"><tr><th>Retailer</th><th>Line</th><th>Weeks</th><th>Lift</th><th>Spend</th><th>Incr. GP</th><th>ROI</th></tr>${d.combos.map((c,i)=>`<tr${i==4?' style="border-top:2px solid #E4E8EE"':''}><td>${c.retailer}</td><td>${c.line.replace(" Chips","")}</td><td>${c.weeks}</td><td>${SP(c.lift,0)}</td><td>${M(c.spend)}</td><td>${M(c.incgp)}</td><td>${pill(c.roi)}</td></tr>`).join("")}</table>`,`<span class="lg">by ROI · 8+ promo weeks</span>`)
+  +panel("e",5,"Lift and ROI by quarter",cv("c5"),lg(C.mint,"Lift")+lg(C.navy,"ROI"))
+  +panel("f","<i class='fa-solid fa-lightbulb' style='font-size:10px'></i>","Key insights",ins((()=>{const R=d.retailers,best=R[0],worst=R[R.length-1],big=[...R].sort((a,b)=>b.spend-a.spend)[0],pop=d.lines.find(x=>x.name=="Popcorn");return [
+   ["","fa-arrow-trend-up",`Promos lift units <b>${SP(k.lift,0)}</b>, but only <b>${P(k.pos,0)}</b> of promo weeks pay back their spend.`],
+   ["","fa-trophy",`<b>${best.name}</b> returns <b>${SP(best.roi,0)}</b> ROI on a <b>${SP(best.lift,0)}</b> lift.`],
+   ["r","fa-triangle-exclamation",`<b>${big.name}</b> takes the most spend (${M(big.spend)}) at <b>${SP(big.roi,0)}</b> ROI; ${worst.name} is lowest at <b>${SP(worst.roi,0)}</b>.`],
+   ["o","fa-box",`Popcorn is the only line near break-even (<b>${SP(pop.roi,0)}</b>).`],
+   ["n","fa-arrow-right",`Shift promo weeks from ${worst.name} and ${big.name} toward ${best.name} and ${R[1].name}.`]]})()));
+ new Chart(c2,{type:"scatter",data:{datasets:Object.keys(LC).map(l=>({label:l,data:d.points.filter(x=>x.l==l).map(x=>({x:x.lift*100,y:x.roi*100,n:`${x.r} · ${x.p}`})),backgroundColor:LC[l]+"99",pointRadius:3.2,pointHoverRadius:5}))},
+  options:{interaction:{mode:"nearest",intersect:true},layout:{padding:{top:6,right:8}},plugins:{tooltip:{callbacks:{label:c=>` ${c.raw.n}: lift ${c.raw.x.toFixed(0)}%, ROI ${c.raw.y.toFixed(0)}%`}}},
+  scales:{x:{...gridY,min:-20,max:160,title:{display:true,text:"Lift vs. baseline (%)",font:{size:10.5}},ticks:{callback:v=>v+"%"}},y:{...gridY,min:-150,max:250,title:{display:true,text:"ROI (%)",font:{size:10.5}},ticks:{callback:v=>v+"%",maxTicksLimit:6}}}},
+  plugins:[{id:"be",beforeDatasetsDraw(ch){const {ctx,chartArea:a,scales:{y}}=ch;const py=y.getPixelForValue(0);ctx.save();ctx.fillStyle="rgba(0,147,147,.06)";ctx.fillRect(a.left,a.top,a.right-a.left,py-a.top);ctx.strokeStyle=C.navy;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(a.left,py);ctx.lineTo(a.right,py);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=C.navy;ctx.font="600 10px Inter";ctx.fillText("Break-even",a.left+4,py-4);ctx.restore();}}]});
+ hbar("c3",d.retailers.map(x=>x.name),d.retailers.map(x=>x.roi*100),d.retailers.map(x=>x.roi<0?C.red:C.teal),(v,c)=>`${v>0?"+":""}${v.toFixed(0)}% · lift ${SP(d.retailers[c.dataIndex].lift,0)}`,{suf:"%",min:-60,max:60,pad:96,ref:{x:0,label:""}});
+ {const ch=Chart.getChart("c3");ch.options.scales.y.afterFit=sc=>{sc.width=142};ch.update();}
+ new Chart(c5,{data:{labels:d.quarters.map(q=>q.name),datasets:[{type:"line",label:"ROI",suf:"%",data:d.quarters.map(q=>q.roi*100),yAxisID:"y2",borderColor:C.navy,borderWidth:2.4,pointRadius:4,pointBackgroundColor:C.navy},{type:"bar",label:"Lift",suf:"%",data:d.quarters.map(q=>q.lift*100),backgroundColor:C.mint,borderRadius:4,barPercentage:.55}]},
+  options:{layout:{padding:{top:16}},scales:{x:noGridX,y:{...gridY,min:0,max:60,ticks:{callback:v=>v+"%",maxTicksLimit:4}},y2:{position:"right",min:-40,max:10,grid:{display:false},border:{display:false},ticks:{callback:v=>v+"%",maxTicksLimit:6}}},
+  plugins:{datalabels:{display:true,anchor:"end",align:c=>c.datasetIndex?"end":"right",offset:6,font:{weight:700,size:10.5},color:c=>c.datasetIndex?"#16181D":"#fff",
+   backgroundColor:c=>c.datasetIndex?null:C.navy,borderRadius:4,padding:{top:2,bottom:2,left:5,right:5},formatter:(v,c)=>`${c.datasetIndex?"lift ":"ROI "}${v>0?"+":""}${v.toFixed(0)}%`}}}});
 }
 </script></body></html>

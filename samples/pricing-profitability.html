@@ -54,10 +54,10 @@ footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px soli
 </section>
 <section><h2>Definitions &amp; caveats</h2><div class="box"><ul><li><b>Price-volume-mix</b> uses retail (shelf) dollars at SKU × retailer grain: price = Σ(P₁ − P₀)·Q₁, volume = (ΣQ₁ − ΣQ₀) × average P₀, and mix is the remainder. The three add up exactly to the change.</li><li><b>Elasticity</b> is a simple difference-in-differences on base (non-promo) velocity, 12 weeks before vs. after the increase, with Tortilla Chips as the control. It is a directional estimate, not a demand model.</li><li><b>Price index</b> compares the unit-weighted regular shelf price with the average competitor shelf price for the same months.</li><li><b>Net price per unit</b> is what the brand keeps after all trade spend, from the SKU P&amp;L (latest 12 complete months vs. the prior 12).</li></ul><p style="margin-top:10px">This is a portfolio sample built on invented data. Before using measures like these in production, I validate them against source totals and agree the definitions with the business.</p></div></section>
 <section><h2>Key DAX measures</h2><pre><code>Retail $ = SUM ( fact_retail_sales[Dollars] )
-Units    = SUM ( fact_retail_sales[Units] )
--- Retail $ YA and Units YA shift the fiscal week window back 52 weeks (see the sell-through sample)
+Total Units = SUM ( fact_retail_sales[Units] )
+-- Retail $ YA and Units YA (on [Total Units]) shift the fiscal week window back 52 weeks (see the sell-through sample)
 
-Avg Shelf Price = DIVIDE ( [Retail $], [Units] )
+Avg Shelf Price = DIVIDE ( [Retail $], [Total Units] )
 
 Price Realization =
 DIVIDE ( [Retail $], SUMX ( fact_retail_sales, fact_retail_sales[Units] * fact_retail_sales[ShelfListPrice] ) )
@@ -69,27 +69,27 @@ Price Effect =
 SUMX (
     CROSSJOIN ( VALUES ( dim_product[SKU] ), VALUES ( dim_retailer[RetailerID] ) ),
     VAR P0 = [Avg Price YA]
-    RETURN IF ( ISBLANK ( P0 ), 0, [Retail $] - P0 * [Units] )
+    RETURN IF ( ISBLANK ( P0 ), 0, [Retail $] - P0 * [Total Units] )
 )
 
-Volume Effect = ( [Units] - [Units YA] ) * [Avg Price YA]
+Volume Effect = ( [Total Units] - [Units YA] ) * [Avg Price YA]
 
 Mix Effect =
 SUMX (
     CROSSJOIN ( VALUES ( dim_product[SKU] ), VALUES ( dim_retailer[RetailerID] ) ),
-    [Avg Price YA] * [Units]
-) - [Units] * [Avg Price YA]
+    [Avg Price YA] * [Total Units]
+) - [Total Units] * [Avg Price YA]
 
 -- Regular (list) shelf price vs. the average competitor shelf price; 100 = parity
 Price Index =
 DIVIDE (
-    DIVIDE ( SUMX ( fact_retail_sales, fact_retail_sales[Units] * fact_retail_sales[ShelfListPrice] ), [Units] ),
+    DIVIDE ( SUMX ( fact_retail_sales, fact_retail_sales[Units] * fact_retail_sales[ShelfListPrice] ), [Total Units] ),
     AVERAGE ( fact_competitor_price[CompetitorShelfPrice] )
 ) * 100
 
 -- Velocity without promotion weeks, used to read the price response
 Base Velocity =
-CALCULATE ( DIVIDE ( [Units], SUM ( fact_retail_sales[StoresSelling] ) ), fact_retail_sales[PromoFlag] = 0 )
+CALCULATE ( DIVIDE ( [Total Units], SUM ( fact_retail_sales[StoresSelling] ) ), fact_retail_sales[PromoFlag] = 0 )
 
 Net Price per Unit =
 DIVIDE (
@@ -101,7 +101,7 @@ DIVIDE (
   <p>Download the CSV files to rebuild this report: <a href="data/fact_retail_sales.csv">fact_retail_sales.csv</a> · <a href="data/fact_price_list.csv">fact_price_list.csv</a> · <a href="data/fact_competitor_price.csv">fact_competitor_price.csv</a> · <a href="data/fact_sku_pnl.csv">fact_sku_pnl.csv</a> · <a href="data/dim_product.csv">dim_product.csv</a> · <a href="data/dim_retailer.csv">dim_retailer.csv</a> · <a href="data/dim_week.csv">dim_week.csv</a>, or get <a href="data/saltbrush-sample-data.zip">all sample files (.zip)</a>.</p>
   <div class="btns"><a class="btn primary" href="https://synesisanalytics.com/consultation">Want this for your brand? Book a consultation</a><a class="btn" href="../index.html#samples">All samples</a></div>
 </section>
-<section><h2>More samples</h2><div class="more"><a href="retail-sell-through.html">Retail sell-through &rarr;</a><a href="inventory-weeks-of-supply.html">Inventory &amp; weeks of supply &rarr;</a><a href="forecast-accuracy.html">Forecast accuracy &amp; S&amp;OP &rarr;</a><a href="trade-spend-margin.html">Trade spend &amp; margin &rarr;</a><a href="sku-profitability.html">SKU profitability &rarr;</a></div></section>
+<section><h2>More samples</h2><div class="more"><a href="retail-sell-through.html">Retail sell-through &rarr;</a><a href="inventory-weeks-of-supply.html">Inventory &amp; weeks of supply &rarr;</a><a href="forecast-accuracy.html">Forecast accuracy &amp; S&amp;OP &rarr;</a><a href="trade-spend-margin.html">Trade spend &amp; margin &rarr;</a><a href="sku-profitability.html">SKU profitability &rarr;</a><a href="promotion-analysis.html">Promotion analysis &rarr;</a></div></section>
 </div>
 <footer><div class="wrap">© 2026 Adriana Smock · Sample built with invented data</div></footer>
 </body></html>
